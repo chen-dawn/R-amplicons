@@ -8,7 +8,7 @@ navbar:
   - text: Intro to R
     href: 02-intro-to-r.html
   - text: Analyzing Amplicon Data
-    href: 03-amplicon-data.html
+    href: 03-analyzing-amplicon-data.html
 
 output:
   html_document:

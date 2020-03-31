@@ -1,6 +1,9 @@
 ---
 title: "Amplicon Analysis in R"
-author: "null"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
 ---
 
 ```{r setup, include=FALSE}
@@ -14,7 +17,7 @@ All Data Carpentry instructional material is freely available under the Creative
 ## Lessons
 
 1. [Project Overview](00-project-overview.html)
-2. [Overview of Mothur Preprocessing](01-preprocessing.md)
+2. [Overview of Mothur Preprocessing](01-preprocessing.html)
 3. [Introduction to R](02-intro-to-r.html)
 4. [Analyzing Amplicon Data](03-analyzing-amplicon-data.html)
 
