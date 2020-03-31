@@ -120,4 +120,3 @@ install RStudio.
 ## Resources
 
 These materials were created by referencing several other resources, and this course website is by no means a completely exhaustive resource or tutorial on 16S rRNA amplicon analysis.
-
