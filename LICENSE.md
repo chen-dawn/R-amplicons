@@ -36,7 +36,7 @@ With the understanding that:
 For the full legal text of this license, please see
 [https://creativecommons.org/licenses/by/4.0/legalcode](https://creativecommons.org/licenses/by/4.0/legalcode).
 
-# Software
+## Software
 
 Except where otherwise noted, the example programs and other software
 provided by Data Carpentry and this lesson are made available under the
