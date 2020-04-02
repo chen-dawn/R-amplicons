@@ -1,13 +1,31 @@
 ---
-title: "Introduction to R"
+title:
 output: 
   html_document:
     toc: true
     toc_float: true
+    include:
+      after_body: _footer.html
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-This site contains lessons for analyzing 16S rRNA amplicon sequencing data in R based on data collected at the University of Wisconsin - Madison through the Micro 551 Senior Capstone class. Course website and Introduction to R materials were modified from the Data Carpentry course materials (Copyright (c) Data Carpentry) on [Data Analysis and Visualization in R for Ecologists](https://datacarpentry.org/R-ecology-lesson/). These lessons provide a brief overview of the experimental design, how sequences were preprocessed using [mothur](https://mothur.org/), and how to analyze the resulting OTU (operational taxonomical unit) table of abundances for each taxa in R.
+<br>
+
+# Getting Started in R 
+
+The term "R" is used to refer to both the programming language and the software that interprets scripts written using it. RStudio is a popular way to not only write your R scripts but also to interact with the R software. To function correctly, RStudio needs R and therefore both need to be installed on your computer.
+
+You may be asking yourself - why should I learn R and not use a program like Excel to analyze my amplicon data and perform statistical analyses? There are a couple reasons R is generally a useful program and is really beneficial for using in 16S amplicon analyses: 
+
+1. dd
+
+## RStudio Interface 
+
+## Getting set up
+
+## Interacting with R
+
+# Introduction to R

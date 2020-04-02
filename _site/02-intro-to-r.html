@@ -11,7 +11,7 @@
 
 
 
-<title>Introduction to R</title>
+<title></title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -19,6 +19,9 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -248,6 +251,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -255,6 +321,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -275,13 +351,13 @@ $(document).ready(function () {
   <a href="00-project-overview.html">Project Overview</a>
 </li>
 <li>
-  <a href="01-preprocessing.html">Preprocessing Sequenes</a>
+  <a href="01-preprocessing.html">Preprocessing Sequences</a>
 </li>
 <li>
   <a href="02-intro-to-r.html">Intro to R</a>
 </li>
 <li>
-  <a href="03-amplicon-data.html">Analyzing Amplicon Data</a>
+  <a href="03-analyzing-amplicon-data.html">Analyzing Amplicon Data</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -295,15 +371,50 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Introduction to R</h1>
 
 </div>
 
 
-<p>This site contains lessons for analyzing 16S rRNA amplicon sequencing data in R based on data collected at the University of Wisconsin - Madison through the Micro 551 Senior Capstone class. Course website and Introduction to R materials were modified from the Data Carpentry course materials (Copyright (c) Data Carpentry) on <a href="https://datacarpentry.org/R-ecology-lesson/">Data Analysis and Visualization in R for Ecologists</a>. These lessons provide a brief overview of the experimental design, how sequences were preprocessed using <a href="https://mothur.org/">mothur</a>, and how to analyze the resulting OTU (operational taxonomical unit) table of abundances for each taxa in R.</p>
+<p><br></p>
+<div id="getting-started-in-r" class="section level1">
+<h1>Getting Started in R</h1>
+<p>The term “R” is used to refer to both the programming language and the software that interprets scripts written using it. RStudio is a popular way to not only write your R scripts but also to interact with the R software. To function correctly, RStudio needs R and therefore both need to be installed on your computer.</p>
+<p>You may be asking yourself - why should I learn R and not use a program like Excel to analyze my amplicon data and perform statistical analyses? There are a couple reasons R is generally a useful program and is really beneficial for using in 16S amplicon analyses:</p>
+<ol style="list-style-type: decimal">
+<li>dd</li>
+</ol>
+<div id="rstudio-interface" class="section level2">
+<h2>RStudio Interface</h2>
+</div>
+<div id="getting-set-up" class="section level2">
+<h2>Getting set up</h2>
+</div>
+<div id="interacting-with-r" class="section level2">
+<h2>Interacting with R</h2>
+</div>
+</div>
+<div id="introduction-to-r" class="section level1">
+<h1>Introduction to R</h1>
+</div>
 
 
+<hr/>
+<div class="row">
+  <div class="col-md-7 text-left">
+    <p class="text-muted">
+      <a href="https://elizabethmcd.github.io">Elizabeth McDaniel</a>,  2020. <a href="https://github.com/elizabethmcd/R-amplicons/blob/master/LICENSE.md">License</a>.
+    </p>
+  </div>
+  <div class="col-md-5 text-right">
+    <p class="text-muted">
+      <a href="https://github.com/elizabethmcd/R-amplicons/issues/new">Github Repository</a>. <br/>
+    </p>
+  </div>
+</div>
 
+
+</div>
+</div>
 
 </div>
 
@@ -336,6 +447,32 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
