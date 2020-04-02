@@ -351,7 +351,7 @@ div.tocify {
   <a href="00-project-overview.html">Project Overview</a>
 </li>
 <li>
-  <a href="01-preprocessing.html">Preprocessing Sequenes</a>
+  <a href="01-preprocessing.html">Preprocessing Sequences</a>
 </li>
 <li>
   <a href="02-intro-to-r.html">Intro to R</a>
@@ -376,10 +376,10 @@ div.tocify {
 </div>
 
 
-<p>This site contains lessons for analyzing 16S rRNA amplicon sequencing data in R based on data collected at the University of Wisconsin - Madison through the Micro 551 Senior Capstone class. Course website and Introduction to R materials were modified from the Data Carpentry course materials (Copyright (c) Data Carpentry) on <a href="https://datacarpentry.org/R-ecology-lesson/">Data Analysis and Visualization in R for Ecologists</a>. These lessons provide a brief overview of the experimental design, how sequences were preprocessed using <a href="https://mothur.org/">mothur</a>, and how to analyze the resulting OTU (operational taxonomical unit) table of abundances for each taxa in R.</p>
+<p>This site contains lessons for analyzing 16S rRNA amplicon sequencing data in R based on data collected at the University of Wisconsin - Madison through the Micro 551 Senior Capstone class. Introduction to R materials were modified from the Data Carpentry course materials (Copyright (c) Data Carpentry) on <a href="https://datacarpentry.org/R-ecology-lesson/">Data Analysis and Visualization in R for Ecologists</a>. These lessons provide a brief overview of the experimental design, how sequences were preprocessed using <a href="https://mothur.org/">mothur</a>, and how to analyze the resulting OTU (operational taxonomical unit) table of abundances for each taxa in R.</p>
 <p>All Data Carpentry instructional material is freely available under the Creative Commons Attribution <a href="https://datacarpentry.org/R-ecology-lesson/LICENSE.html">license</a>, and therefore this material is freely available under the same license.</p>
-<div id="lessons" class="section level2">
-<h2>Lessons</h2>
+<div id="overviews-lessons" class="section level2">
+<h2>Overviews &amp; Lessons:</h2>
 <ol style="list-style-type: decimal">
 <li><a href="00-project-overview.html">Project Overview</a></li>
 <li><a href="01-preprocessing.html">Overview of Mothur Preprocessing</a></li>
@@ -389,10 +389,11 @@ div.tocify {
 </div>
 <div id="datasets" class="section level2">
 <h2>Datasets</h2>
+<p>You will need to download the data files for the Introduction to R lesson and OTU tables for the Amplicon Analysis lesson. Downloading the raw sequencing files to perform preprocessing on your own is optional, and can be accessed through your UW Box Account.</p>
 <ul>
 <li><a href="https://figshare.com/articles/Portal_Project_Teaching_Database/1314459">Data files for Introduction to R materials</a></li>
-<li><a href="https://uwmadison.box.com/s/51uqumk335wde9lsj3zduwyo2mxasoyg">Raw Sequencing Files for Preprocessing</a> - you can only access these files if you have a UW-Madison Box account</li>
 <li><a href="">OTU Tables for Amplicon Analysis Lessons</a></li>
+<li><a href="https://uwmadison.box.com/s/51uqumk335wde9lsj3zduwyo2mxasoyg">Raw Sequencing Files for Preprocessing</a> - you can only access these files if you have a UW-Madison Box account</li>
 </ul>
 </div>
 <div id="installation-instructions" class="section level2">
@@ -455,8 +456,15 @@ div.tocify {
 <h3>Installing Packages</h3>
 <p><strong>After installing R and RStudio, you need to install the following packages.</strong></p>
 <ul>
-<li><p>After starting RStudio, at the console type: <code>install.packages(c(&quot;tidyverse&quot;, &quot;RSQLite&quot;))</code></p></li>
-<li><p>You can also do this by going to Tools -&gt; Install Packages and typing the names of the packages separated by a comma.</p></li>
+<li>After starting RStudio, at the console type these commands in order (you can copy and paste the following lines):</li>
+</ul>
+<pre><code>install.packages(c(&quot;tidyverse&quot;, &quot;remotes&quot;))
+remotes::install_github(&quot;MadsAlbertsen/ampvis2&quot;)
+if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE)) install.packages(&quot;BiocManager&quot;)
+BiocManager::install(&quot;phyloseq&quot;)</code></pre>
+<p>If you are asked to update packages, type <code>a</code> for all. If you are asked to install packages from the source compilation, type <code>Yes</code>. You will know if the package installed successfully if you type <code>library(tidyverse)</code> and so on for each package and you do not get error messages. Note, when the tidyverse package is loaded, it will show some messages describing the package - this is not an error.</p>
+<ul>
+<li>You can also do this by going to Tools -&gt; Install Packages and typing the names of the packages separated by a comma.</li>
 </ul>
 </div>
 </div>
@@ -465,6 +473,20 @@ div.tocify {
 <p>These materials were created by referencing several other resources, and this course website is by no means a completely exhaustive resource or tutorial on 16S rRNA amplicon analysis.</p>
 </div>
 
+
+<hr/>
+<div class="row">
+  <div class="col-md-7 text-left">
+    <p class="text-muted">
+      <a href="https://elizabethmcd.github.io">Elizabeth McDaniel</a>,  2020. <a href="https://github.com/elizabethmcd/R-amplicons/blob/master/LICENSE.md">License</a>.
+    </p>
+  </div>
+  <div class="col-md-5 text-right">
+    <p class="text-muted">
+      <a href="https://github.com/elizabethmcd/R-amplicons/issues/new">Github Repository</a>. <br/>
+    </p>
+  </div>
+</div>
 
 
 </div>

@@ -11,7 +11,7 @@
 
 
 
-<title>Project Overview</title>
+<title></title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -19,9 +19,6 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -251,69 +248,6 @@ $(document).ready(function () {
 
 
 
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-
 
 </head>
 
@@ -321,16 +255,6 @@ div.tocify {
 
 
 <div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -351,13 +275,13 @@ div.tocify {
   <a href="00-project-overview.html">Project Overview</a>
 </li>
 <li>
-  <a href="01-preprocessing.html">Preprocessing Sequenes</a>
+  <a href="01-preprocessing.html">Preprocessing Sequences</a>
 </li>
 <li>
   <a href="02-intro-to-r.html">Intro to R</a>
 </li>
 <li>
-  <a href="03-amplicon-data.html">Analyzing Amplicon Data</a>
+  <a href="03-analyzing-amplicon-data.html">Analyzing Amplicon Data</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -371,20 +295,48 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Project Overview</h1>
 
 </div>
 
 
-<div id="r-markdown" class="section level2">
-<h2>R Markdown</h2>
-<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
+<p><br></p>
+<div id="winogradsky-column-perturbations" class="section level1">
+<h1><strong>Winogradsky Column Perturbations</strong></h1>
+<p><img src="img/winograd-1.png" align="right" width="375"></p>
+<p>In this experiment, students collected sediment samples from Lake Mendota in Madison, WI to create Winogradsky columns. The Winogradsky column was invented by Sergei Winogradsky in the 1880s, and the device consisted of a column of pond sediment and water mixed together with a carbon source. Naturally occurring microorganisms establish geochemical gradients along the column based on their different metabolic strategies, which appear as stark color differences. In this small, enclosed ecosystem, students can observe how different microorganisms survive in stratified layers. The top of the column has oxygen available for respiration, whereas the bottom of the column is completely anaerobic, and therefore microbes depend on other compounds than oxygen for growth.</p>
+<p>Once the Winogradsky columns were fully established, students applied various perturbations to their columns. This included adding water, various inhibitors, etc. Students collected samples over time to understand how the Winogradsky column communities changed from the initial perturbation and if they returned to their original state.</p>
+</div>
+<div id="s-rrna-gene-amplicon-sequencing-approach" class="section level1">
+<h1><strong>16S rRNA Gene Amplicon Sequencing Approach</strong></h1>
+<p>The 16S ribosomal RNA gene sequences are used to broadly survey microbial communities without the need for cultivation. This marker or “amplcon” is most often chosen because of 1) its presence in nearly all of life 2) the sequence is highly conserved, and therefore does not undergo extreme changes over time, and 3) this region is large enough to sequence different regions and analyze them with fidelity. The essentiality and conserved nature of the 16S ribosomal RNA gene make sense in light of the central dogma of molecular biology.</p>
+<p><img src="img/central_dogma.png" align="center" width="1000"></p>
+<p>The central dogma describes that DNA is converted to mRNA which is converted to protein, which are done through the processes of transcription and translation, respectively. Transcription is performed by an RNA polymerase, whereas translation is performed by the ribosome - which is made up of multiple subunits, include the 16S subunit. Translation is a very essential process in all of life, since it ensures that proteins are made. And therefore this is a suitable marker to perform broad surveys of a given mixed sample.</p>
+<p>Regions of the 16S rRNA gene are used for high-throughput shotgun sequencing, referred to as V1-V9, which stands for “variable region.” The 16S rRNA gene contains both variable and conserved sequences, which can be used to identify different groups of microbes in a mixed sample. This allows us to easily and cheaply sequence lots of samples to study the taxonomical composition and relative abundances of different taxa that are present.</p>
+<p><img src="img/amplicon_sequencing.png" align="center" width="1000"></p>
+<p>Once you have obtained raw sequences, you are ready for <a href="01-preprocessing.html">preprocessing your sequences</a>.</p>
+<p><br></p>
+<div id="graphics-references" class="section level3">
+<h3><em>Graphics References</em></h3>
+<p><em>1) Winogradsky Column: <a href="http://dataphys.org/list/winogradsky-column/" class="uri">http://dataphys.org/list/winogradsky-column/</a> </em><br> <em>2) Central Dogma Figure: Made by E.A.M with Biorender</em><br> <em>3) 16S rRNA Gene Figure: Made by E.A.M with Biorender, with variable region figure adapted from <a href="https://teachthemicrobiome.weebly.com/sequencing-the-microbiome.html" class="uri">https://teachthemicrobiome.weebly.com/sequencing-the-microbiome.html</a> </em></p>
+</div>
 </div>
 
 
+<hr/>
+<div class="row">
+  <div class="col-md-7 text-left">
+    <p class="text-muted">
+      <a href="https://elizabethmcd.github.io">Elizabeth McDaniel</a>,  2020. <a href="https://github.com/elizabethmcd/R-amplicons/blob/master/LICENSE.md">License</a>.
+    </p>
+  </div>
+  <div class="col-md-5 text-right">
+    <p class="text-muted">
+      <a href="https://github.com/elizabethmcd/R-amplicons/issues/new">Github Repository</a>. <br/>
+    </p>
+  </div>
+</div>
 
-</div>
-</div>
+
 
 </div>
 
@@ -417,32 +369,6 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
