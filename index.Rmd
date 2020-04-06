@@ -19,7 +19,7 @@ All Data Carpentry instructional material is freely available under the Creative
 ## Overviews & Lessons:
 
 1. [Project Overview](00-project-overview.html)
-2. [Overview of Mothur Preprocessing](01-preprocessing.html)
+2. [Preprocessing Overview](01-preprocessing.html)
 3. [Introduction to R](02-intro-to-r.html)
 4. [Analyzing Amplicon Data](03-analyzing-amplicon-data.html)
 
@@ -28,7 +28,7 @@ All Data Carpentry instructional material is freely available under the Creative
 You will need to download the data files for the Introduction to R lesson and OTU tables for the Amplicon Analysis lesson. Downloading the raw sequencing files to perform preprocessing on your own is optional, and can be accessed through your UW Box Account.
 
 - [Data files for Introduction to R materials](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459)
-- [OTU Tables for Amplicon Analysis Lessons]()
+- [OTU Tables for Amplicon Analysis Lessons](https://figshare.com/projects/MICRO_551_Winogradsky_Column_16S_Mothur_Processing_Results/78387)
 - [Raw Sequencing Files for Preprocessing](https://uwmadison.box.com/s/51uqumk335wde9lsj3zduwyo2mxasoyg) - you can only access these files if you have a UW-Madison Box account
 
 ## Installation Instructions

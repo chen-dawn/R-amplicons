@@ -54,6 +54,6 @@ At the end of the preprocessing pipeline, two files are used for downstream anal
 
 ### *Graphics References*
 
-*1) Paired-End Sequencing Figure: QIIME Tutorial *<br> 
-*2) Quality Score Figure: QIIME Tutorial *<br> 
+*1) Paired-End Sequencing Figure: QIIME Tutorial: http://qiime.org/tutorials/ *<br> 
+*2) Quality Score Figure: QIIME Tutorial: http://qiime.org/tutorials/ *<br> 
 *3) Chimera Figure: usearch website: https://drive5.com/usearch/manual/chimeras.html *<br> 
