@@ -12,7 +12,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-This site contains lessons for analyzing 16S rRNA amplicon sequencing data in R based on data collected at the University of Wisconsin - Madison through the Micro 551 Senior Capstone class. Introduction to R materials were modified from the Data Carpentry course materials (Copyright (c) Data Carpentry) on [Data Analysis and Visualization in R for Ecologists](https://datacarpentry.org/R-ecology-lesson/). These lessons provide a brief overview of the experimental design, how sequences were preprocessed using [mothur](https://mothur.org/), and how to analyze the resulting OTU (operational taxonomical unit) table of abundances for each taxa in R.
+This site contains lessons for analyzing 16S rRNA amplicon sequencing data in R based on data collected at the University of Wisconsin - Madison through the Micro 551 Senior Capstone class. Introduction to R materials were modified from the Data Carpentry course materials (Copyright (c) Data Carpentry) on [Data Analysis and Visualization in R for Ecologists](https://datacarpentry.org/R-ecology-lesson/). These lessons provide a brief overview of the experimental design, how amplicons are preprocessed, and how to analyze the resulting OTU (operational taxonomical unit) table of abundances for each taxa in R.
 
 All Data Carpentry instructional material is freely available under the Creative Commons Attribution [license](https://datacarpentry.org/R-ecology-lesson/LICENSE.html), and therefore this material is freely available under the same license.
 
@@ -28,7 +28,7 @@ All Data Carpentry instructional material is freely available under the Creative
 You will need to download the data files for the Introduction to R lesson and OTU tables for the Amplicon Analysis lesson. Downloading the raw sequencing files to perform preprocessing on your own is optional, and can be accessed through your UW Box Account.
 
 - [Data files for Introduction to R materials](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459)
-- [OTU Tables for Amplicon Analysis Lessons](https://figshare.com/projects/MICRO_551_Winogradsky_Column_16S_Mothur_Processing_Results/78387)
+- [OTU Tables for Amplicon Analysis Lessons](https://figshare.com/projects/MICRO_551_Winogradsky_Results/78387)
 - [Raw Sequencing Files for Preprocessing](https://uwmadison.box.com/s/51uqumk335wde9lsj3zduwyo2mxasoyg) - you can only access these files if you have a UW-Madison Box account
 
 ## Installation Instructions
@@ -119,7 +119,7 @@ install RStudio.
 * After starting RStudio, at the console type these commands in order (you can copy and paste the following lines):
 
 ```
-install.packages(c("tidyverse", "remotes"))
+install.packages(c("tidyverse", "remotes", "devtools"))
 remotes::install_github("MadsAlbertsen/ampvis2")
 if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
 BiocManager::install("phyloseq")

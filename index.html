@@ -25,6 +25,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -361,7 +363,12 @@ div.tocify {
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/elizabethmcd/R-amplicons">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -376,7 +383,7 @@ div.tocify {
 </div>
 
 
-<p>This site contains lessons for analyzing 16S rRNA amplicon sequencing data in R based on data collected at the University of Wisconsin - Madison through the Micro 551 Senior Capstone class. Introduction to R materials were modified from the Data Carpentry course materials (Copyright (c) Data Carpentry) on <a href="https://datacarpentry.org/R-ecology-lesson/">Data Analysis and Visualization in R for Ecologists</a>. These lessons provide a brief overview of the experimental design, how sequences were preprocessed using <a href="https://mothur.org/">mothur</a>, and how to analyze the resulting OTU (operational taxonomical unit) table of abundances for each taxa in R.</p>
+<p>This site contains lessons for analyzing 16S rRNA amplicon sequencing data in R based on data collected at the University of Wisconsin - Madison through the Micro 551 Senior Capstone class. Introduction to R materials were modified from the Data Carpentry course materials (Copyright (c) Data Carpentry) on <a href="https://datacarpentry.org/R-ecology-lesson/">Data Analysis and Visualization in R for Ecologists</a>. These lessons provide a brief overview of the experimental design, how amplicons are preprocessed, and how to analyze the resulting OTU (operational taxonomical unit) table of abundances for each taxa in R.</p>
 <p>All Data Carpentry instructional material is freely available under the Creative Commons Attribution <a href="https://datacarpentry.org/R-ecology-lesson/LICENSE.html">license</a>, and therefore this material is freely available under the same license.</p>
 <div id="overviews-lessons" class="section level2">
 <h2>Overviews &amp; Lessons:</h2>
@@ -392,7 +399,7 @@ div.tocify {
 <p>You will need to download the data files for the Introduction to R lesson and OTU tables for the Amplicon Analysis lesson. Downloading the raw sequencing files to perform preprocessing on your own is optional, and can be accessed through your UW Box Account.</p>
 <ul>
 <li><a href="https://figshare.com/articles/Portal_Project_Teaching_Database/1314459">Data files for Introduction to R materials</a></li>
-<li><a href="https://figshare.com/projects/MICRO_551_Winogradsky_Column_16S_Mothur_Processing_Results/78387">OTU Tables for Amplicon Analysis Lessons</a></li>
+<li><a href="https://figshare.com/projects/MICRO_551_Winogradsky_Results/78387">OTU Tables for Amplicon Analysis Lessons</a></li>
 <li><a href="https://uwmadison.box.com/s/51uqumk335wde9lsj3zduwyo2mxasoyg">Raw Sequencing Files for Preprocessing</a> - you can only access these files if you have a UW-Madison Box account</li>
 </ul>
 </div>
@@ -458,7 +465,7 @@ div.tocify {
 <ul>
 <li>After starting RStudio, at the console type these commands in order (you can copy and paste the following lines):</li>
 </ul>
-<pre><code>install.packages(c(&quot;tidyverse&quot;, &quot;remotes&quot;))
+<pre><code>install.packages(c(&quot;tidyverse&quot;, &quot;remotes&quot;, &quot;devtools&quot;))
 remotes::install_github(&quot;MadsAlbertsen/ampvis2&quot;)
 if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE)) install.packages(&quot;BiocManager&quot;)
 BiocManager::install(&quot;phyloseq&quot;)</code></pre>
@@ -483,6 +490,7 @@ BiocManager::install(&quot;phyloseq&quot;)</code></pre>
   </div>
   <div class="col-md-5 text-right">
     <p class="text-muted">
+        <i class="fas fa-github"></i>
       <a href="https://github.com/elizabethmcd/R-amplicons/issues/new">Github Repository</a>. <br/>
     </p>
   </div>

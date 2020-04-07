@@ -25,6 +25,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -361,7 +363,12 @@ div.tocify {
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/elizabethmcd/R-amplicons">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -384,13 +391,13 @@ div.tocify {
 </div>
 <div id="overview-of-preprocessing-steps" class="section level2">
 <h2>Overview of Preprocessing Steps</h2>
-<p>There are numerous methods and bioinformatics pipelines for preprocessing 16S amplicon data. QIIME2 and mothur are the two most popular tools for classifying 16S rRNA gene sequences and grouping into OTUs. In this case, we used mothur to preprocess our Winogradsky samples. The main steps in amplicon sequencing preprocessing are:</p>
+<p>There are numerous methods and bioinformatics pipelines for preprocessing 16S amplicon data. The main steps in amplicon sequencing preprocessing are:</p>
 <ol style="list-style-type: decimal">
 <li>Quality Filtering</li>
 <li>Merging paired-end reads into contigs</li>
 <li>Removing chimeras</li>
 <li>Assigning taxonomy</li>
-<li>Clustering into Operational Taxonomic Units (OTUs)</li>
+<li>Assigning OTUs</li>
 </ol>
 <p>First we have to perform some initial quality filtering on the sequences. Because of the way sequencing works, the ends of each paired-end read are usually of lower quality. This is referred to as trimming the ends of sequences. Additionally, the reverse read is overall of lower quality than the forward read. When the sequencer outputs sequencing reads, it also assigns quality scores to each base based on the confidence score. We can filter sequences based on those quality scores so that we are only working with data that we can trust is of high quality.</p>
 <p><img src="img/qual.png" align="center" width="900"></p>
