@@ -1,0 +1,19 @@
+navbar:
+  title: Amplicon Analysis in R
+  left:
+  - text: Project Overview
+    href: 00-project-overview.html
+  - text: Preprocessing Sequences
+    href: 01-preprocessing.html
+  - text: Intro to R
+    href: 02-intro-to-r.html
+  - text: Analyzing Amplicon Data
+    href: 03-analyzing-amplicon-data.html
+  right:
+  - icon: fa-github 
+    href: https://github.com/elizabethmcd/R-amplicons
+
+
+output:
+  html_document:
+    theme: flatly
