@@ -10,7 +10,7 @@ navbar:
   - text: Analyzing Amplicon Data
     href: 03-analyzing-amplicon-data.html
   right:
-  - icon: fa-github-alt 
+  - icon: fa-github
     href: https://github.com/elizabethmcd/R-amplicons
 
 
