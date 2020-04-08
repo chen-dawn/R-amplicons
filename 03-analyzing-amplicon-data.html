@@ -613,20 +613,20 @@ otus_df &lt;- as.data.frame(otus)</code></pre>
 <p>You could repeat this for any group that you wanted to.</p>
 <blockquote>
 <h3 id="challenge">Challenge</h3>
-<p>Now that we have our data in a tidy format in <code>otu_data</code>, let’s look at some summary statistics by each sample. For each sample, calculate the mean, minimum, and maximum number of raw_counts. You should get something that looks like:</p>
+<p>For all OTUs that belong to the phylum Cyanobacteria, summarize the count of different Orders within that phylum. Remember to take out rows with missing values. You should get something that looks like:</p>
 </blockquote>
 <pre><code>   Sample    mean_counts   min   max
    &lt;chr&gt;           &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
- 1 Sample-1      21.4        0  3382
- 2 Sample-10      0.0103     0    13
- 3 Sample-13      2.88       0   859
- 4 Sample-14      3.88       0  1222
- 5 Sample-15     54.2        0 37731
- 6 Sample-16      5.49       0  1246
- 7 Sample-19      0.0900     0    62
- 8 Sample-2       1.16       0   388
- 9 Sample-20     54.7        0 20267
-10 Sample-21      2.86       0  1348</code></pre>
+ Order                           count
+  &lt;fct&gt;                           &lt;int&gt;
+1 Vampirovibrionales                 18
+2 Chloroplast                        15
+3 Nostocales                         11
+4 Gastranaerophilales                10
+5 Obscuribacterales                   7
+6 Synechococcales                     5
+7 Leptolyngbyales                     2
+8 Oxyphotobacteria_Incertae_Sedis     2</code></pre>
 <p>You’ll notice after performing this exercise that “Chloroplast” is listed. Sometimes organelles like chloroplasts and mitochondira will end up in our dataset - but we don’t want them there. Luckily in our case, chloroplasts are defined at the Order level and Mitochondria at the Family level, so we can use that information to filter them out with <code>!=</code> which stands for does not equal.</p>
 <p>First we will want to keep the rownames, because this has important information about the classification for each OTU, which we will need later to match with the OTU counts data:</p>
 <pre><code>taxa_intm &lt;- rownames_to_column(taxa_df, &quot;otu&quot;)
@@ -683,22 +683,6 @@ Sample-32 Sample-33 Sample-34 Sample-35 Sample-41  Sample-7  Sample-8  Sample-9
 
    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
      2.0    165.2   2800.0  35538.1  37230.0 229782.0 </code></pre>
-<blockquote>
-<h3 id="challenge-1">Challenge</h3>
-<p>Using the otus_df, create summary statistics for calculating the mean, minimum, and maxiumum number of counts for each sample. You should get something like:</p>
-</blockquote>
-<pre><code>   Sample    mean_counts   min   max
-   &lt;chr&gt;           &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
- 1 Sample-1      21.4        0  3382
- 2 Sample-10      0.0103     0    13
- 3 Sample-13      2.88       0   859
- 4 Sample-14      3.88       0  1222
- 5 Sample-15     54.2        0 37731
- 6 Sample-16      5.49       0  1246
- 7 Sample-19      0.0900     0    62
- 8 Sample-2       1.16       0   388
- 9 Sample-20     54.7        0 20267
-10 Sample-21      2.86       0  1348</code></pre>
 <p>Currently, the way this dataset is set up is a bit messy to look at, and doesn’t emplify “tidy” data. Each sample is an entire row, each column a separate OTU. Whereas with “tidy” data, each individual data entry should be given its’ own row. We can do this by a series of commands. First, we want to create an intermediate dataframe where the sample names are a new column. Currently they are row names and we can’t access them easily:</p>
 <pre><code>otu_intm &lt;- rownames_to_column(otus_df, &quot;Sample&quot;)</code></pre>
 <p>Then, we can use the <code>tidyr</code> package within the <code>tidyverse</code> to reformat our table. If you couldn’t get the full tidyverse to install, you can install just tidyr with <code>install.packages(&quot;tidyr&quot;)</code> and then loading it with <code>library(tidyr)</code>. We can use the function <code>pivot_longer</code> to reformat our dataframe to be in “long” format, instead of the current “wide” format. And inspect it with <code>head()</code> first to see what we did:</p>
@@ -731,6 +715,22 @@ Sample-32 Sample-33 Sample-34 Sample-35 Sample-41  Sample-7  Sample-8  Sample-9
 <p>So for every OTU, we have the information for counts of that OTU in that sample, where we can clearly read each row the information that we want. Let’s save this as a new dataframe called <code>otu_data</code>:</p>
 <pre><code>otu_data &lt;- otu_intm %&gt;%
   pivot_longer(cols=-Sample, names_to=&quot;otu&quot;, values_to=&quot;raw_counts&quot;) %&gt;%</code></pre>
+<blockquote>
+<h3 id="challenge-1">Challenge</h3>
+<p>Now that we have our OTU data in a tidy format, let’s look at some summary statistics. Using the otu_data dataframe, create summary statistics for calculating the mean, minimum, and maxiumum number of counts for each sample. You should get something like:</p>
+</blockquote>
+<pre><code>   Sample    mean_counts   min   max
+   &lt;chr&gt;           &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
+ 1 Sample-1      21.4        0  3382
+ 2 Sample-10      0.0103     0    13
+ 3 Sample-13      2.88       0   859
+ 4 Sample-14      3.88       0  1222
+ 5 Sample-15     54.2        0 37731
+ 6 Sample-16      5.49       0  1246
+ 7 Sample-19      0.0900     0    62
+ 8 Sample-2       1.16       0   388
+ 9 Sample-20     54.7        0 20267
+10 Sample-21      2.86       0  1348</code></pre>
 </div>
 <div id="relative-abundances" class="section level2">
 <h2>Relative Abundances</h2>
@@ -852,7 +852,7 @@ colnames(otu_table)
 # … with 198 more rows</code></pre>
 <p>Now let’s look at the median of each class:</p>
 <pre><code>agg_abund %&gt;%
-  group_by(Phylum) %&gt;% 
+  group_by(Class) %&gt;% 
   summarize(median=median(agg_rel_abund)) %&gt;% 
   arrange(desc(median))</code></pre>
 <p>This should output:</p>
@@ -877,8 +877,8 @@ colnames(otu_table)
   pull(Class)</code></pre>
 <p>What we’ve done here is select the top 5 most abundant phyla by median, and pulled the Phylum name so we can save this as a vector. Now we can filter from our larger table only the top phyla and look at their patterns across our samples:</p>
 <pre><code>top_results &lt;- green_sludge_table %&gt;% 
-  filter(Phylum %in% top_phyla) %&gt;% 
-  select(Description, relative_abundance, Phylum)</code></pre>
+  filter(Class %in% top_class) %&gt;% 
+  select(Description, relative_abundance, Class)</code></pre>
 <p>Now let’s look at these results in a plot. We will use <code>ggplot2</code> as part of the <code>tidyverse</code> to plot our data. If you don’t have the entire tidyverse loaded, load <code>ggplot2</code> with <code>install.packages(&quot;ggplot2&quot;)</code> and then <code>library(ggplot2)</code>. Let’s make the plot:</p>
 <pre><code>top_results %&gt;%
   ggplot(aes(x=Class, y=relative_abundance, color=Sample)) + geom_boxplot()</code></pre>
@@ -958,7 +958,7 @@ plot_bar(actinos)</code></pre>
 <pre><code>ps_abundance &lt;- transform_sample_counts(ps, function(x) x/sum(x))</code></pre>
 <p>Let’s look at classes within the Bacteroidets of our new phyloseq object with calculated relative abundances.</p>
 <pre><code>bacteroidetes &lt;- subset_taxa(ps_abundance, Phylum == &quot;Bacteroidetes&quot;)
-plot_bar(actinos, &quot;Class&quot;, fill=&quot;Family&quot;, facet_grid=~description)</code></pre>
+plot_bar(bacteroidetes, &quot;Class&quot;, fill=&quot;Family&quot;, facet_grid=~description)</code></pre>
 <p><img src="img/bar3.png" align="center" width="700" height="300"></p>
 <p>Now we have a figure that makes more sense to us in terms of relative abundance. In the tube1 sample, the Bacteroidia class makes up 15% of the community, and consists mostly of OTUs within the Prevotella.</p>
 </div>
@@ -971,7 +971,7 @@ plot_bar(actinos, &quot;Class&quot;, fill=&quot;Family&quot;, facet_grid=~descri
 <pre><code>plot_ordination(ps_abundance, ord, type=&quot;sample&quot;, color=&quot;description&quot;) + geom_point(size=5)</code></pre>
 <p><img src="img/ord1.png" align="center" width="350" height="200"></p>
 <p>This type of visualization would be handy if you had multiple samples from the same kind of environment and wanted to compare them in a meta-analysis. We could do this with all of our samples. We could create a phyloseq object of the larger dataset by adjusting the metadata file:</p>
-<pre><code>info &lt;- read.csv(&quot;raw_data/sample-codes-metadata.csv&quot;) %&gt;% select(Sample, Description)
+<pre><code>info &lt;- read.csv(&quot;raw_data/sample-codes-metadata.csv&quot;) %&gt;% select(Sample, Description, Group)
 rownames(info) &lt;- info$Sample
 ps.all &lt;- phyloseq(otu_table(otus, taxa_are_rows = FALSE), sample_data(info), tax_table(taxas))
 ps.all.abund &lt;- transform_sample_counts(ps.all, function(x) x/sum(x))
