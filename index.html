@@ -473,11 +473,18 @@ BiocManager::install(&quot;phyloseq&quot;)</code></pre>
 <ul>
 <li>You can also do this by going to Tools -&gt; Install Packages and typing the names of the packages separated by a comma.</li>
 </ul>
+<p>If you cannot install the entire <code>tidyverse</code> because of lots of errors, we only need these packages from the larger set:</p>
+<pre><code>install.packages(c(&quot;dplyr&quot;, &quot;tidyr&quot;, &quot;ggplot2&quot;))</code></pre>
 </div>
 </div>
 <div id="resources" class="section level2">
 <h2>Resources</h2>
-<p>These materials were created by referencing several other resources, and this course website is by no means a completely exhaustive resource or tutorial on 16S rRNA amplicon analysis.</p>
+<p>These materials were created by referencing several other resources, and this course website is by no means a completely exhaustive resource or tutorial on 16S rRNA amplicon analysis. I used DADA2 within R to preprocess the samples, and various other resources to help create these tutorials.</p>
+<ul>
+<li><a href="http://benjjneb.github.io/dada2/tutorial.html">DADA2 Workflow</a></li>
+<li><a href="http://www.riffomonas.org/minimalR/08_taxonomic_data.html">Riffomonas Minimal R Microbiome Lesson</a></li>
+<li><a href="https://joey711.github.io/phyloseq/import-data.html">Phyloseq Tutorials</a></li>
+</ul>
 </div>
 
 
