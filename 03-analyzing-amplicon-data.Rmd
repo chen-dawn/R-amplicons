@@ -827,11 +827,156 @@ otu_5 "Bacteria" "Proteobacteria" "Gammaproteobacteria"
 
 ## Basic Plots
 
+Now that we know how to work with phyloseq objects, we can start some basic analyses and visualizations. Let's say we are interested in OTUs that belong to the phylum Actinobacteria. A reminder that we are again only working with raw counts and not relative abundances. We can make a subset of our phyloseq object with the function `subset_taxa` and get only Actinobacteria and plot those OTUs: 
 
+```
+actinos <- subset_taxa(ps, Phylum == "Actinobacteria")
+plot_bar(actinos)
+```
+
+This plot isn't very interesting, so instead we can color the OTUs by what Genus they belong to within Actinobacteria with: 
+
+```
+plot_bar(actinos, fill="Genus")
+```
+
+<img src="img/bar.png" align="center" width="700" height="250">
+
+We can look at the breakdown of more specific groups using `facets`. Facets are part of ggplot2 that help us create separate, adjacent sub-plots. We can create a separate plot for each sample type, or the description that was given for these samples and look at groups of classes within the Actinobacteria and color by family:
+
+```
+plot_bar(actinos, "Class", fill="Family", facet_grid=~description)
+```
+
+<img src="img/bar2.png" align="center" width="700" height="300">
+
+What if we want to represent this data but the counts are now calculated as relative abundance per sample? We can apply this with the phyloseq function `transform_sample_counts`: 
+
+```
+ps_abundance <- transform_sample_counts(ps, function(x) x/sum(x))
+```
+
+Let's look at classes within the Bacteroidets of our new phyloseq object with calculated relative abundances. 
+
+```
+bacteroidetes <- subset_taxa(ps_abundance, Phylum == "Bacteroidetes")
+plot_bar(actinos, "Class", fill="Family", facet_grid=~description)
+```
+
+<img src="img/bar3.png" align="center" width="700" height="300">
+
+Now we have a figure that makes more sense to us in terms of relative abundance. In the tube1 sample, the Bacteroidia class makes up 15% of the community, and consists mostly of OTUs within the Prevotella. 
+
+## Ordinations 
+
+Often times we will want to perform ordination statistics on our samples in which we plot a large number of OTUs or samples and express them as points on a 2D or 3D coordinate frame. We use this to look easily at differences between OTU composition across samples to see if we can decide if certain taxa are different between samples. Oftentimes in real amplicon analyses we will filter out low occurring OTUs because they might just actually be noise in our dataset. But since each group only sequenced 3-5 samples, we will keep all of our OTUs for the sake of completing an analysis. 
+
+Here we will create an ordination plot of distances between OTUs - which shows us the compositional dissimilarity between the OTUs. 
+
+```
+plot_ordination(ps_abundance, ord, type="taxa", color="Phylum", title="taxa")
+```
+
+This shows us that most of these OTUs have similar compositional or abundance patterns. We can also ordinate by sample to see how similar or dissimilar samples are in their OTU composition: 
+
+```
+plot_ordination(ps_abundance, ord, type="sample", color="description") + geom_point(size=5)
+```
+
+<img src="img/ord1.png" align="center" width="350" height="200">
+
+This type of visualization would be handy if you had multiple samples from the same kind of environment and wanted to compare them in a meta-analysis. We could do this with all of our samples. We could create a phyloseq object of the larger dataset by adjusting the metadata file: 
+
+```
+info <- read.csv("raw_data/sample-codes-metadata.csv") %>% select(Sample, Description)
+rownames(info) <- info$Sample
+ps.all <- phyloseq(otu_table(otus, taxa_are_rows = FALSE), sample_data(info), tax_table(taxas))
+ps.all.abund <- transform_sample_counts(ps.all, function(x) x/sum(x))
+ord.all <- ordinate(ps.all.abund, "NMDS", "bray")
+plot_ordination(ps.all.abund, ord.all, type="Sample", color="Group") + geom_polygon(aes(fill=Group)) + geom_point(size=4)
+```
+<img src="img/meta_analysis.png" align="center" width="600" height="350">
+
+Here we can see how samples from the same experimental group sometimes cluster together, and sometimes they cluster with other groups. The Mudbucket and Thermal samples all cluster well with each other. The Losegradsky_Column samples seem to have some overlap with over groups, and each of these samples seems to be very different from each other comoposition wise. 
+
+You can look at more ordination methods and plots on the [phyloseq tutorial page](https://joey711.github.io/phyloseq/plot_ordination-examples.html). 
+
+## Measures of Diversity
+
+We may want to explore how diverse our communities are in each sample. A common metric is alpha diversity - this is the species diversity within a sample. This is also referred to as "richness", or the total number of different species/OTUs/taxa in a sample or environment. We can calculate a common alpha diversity metric using the Shannon method on all of our samples:
+
+```
+plot_richness(ps.all, color="Group", measures=c("Shannon"))
+```
+
+<img src="img/shannon.png" align="center" width="600" height="350">
+
+These are some of the basic analyses and visualizations that we can perform in phyloseq. You can choose to subset the full dataset by specific samples to further explore, or perform meta-analyses between sets of samples. 
 
 # Working with the **`ampvis2`** package
 
+Lastly, a really nice package that has become popular in amplicon anlayses recently is the `ampvis2` package. This package was created by Dr. Mads Albertsen at the Center for Microbial Communities at Aalborg University in Denmark. Dr. Albertsen also studies microbial communities of wastewater treatment systems like myself, and that's how I mostly know about this package. I've used it myself to create heatmaps of 16S time-series of lab-scale wastewater bioreactors to study the main microorganisms involved in removing phosphorus. This is a figure I created recently: 
 
+<img src="img/tags.png" align="center" width="800" height="200">
+
+I edited the legend and the year labels in Illustrator, but the heatmap itself is from using the same preprocessing steps as our Winogradsky samples and the `ampvis2` package. 
+
+## Ampvis2 object 
+
+To create an ampvis2 object, we can use our pre-existing phyloseq object with some tweaks. To do this, we need to do a couple steps that requires the package `devtools`. This basically allows us to access open-source tools that people have already made that are available on Github - where code is stored online. 
+
+```
+library(devtools)
+devtools::source_gist("8d0ca4206a66be7ff6d76fc4ab8e66c6")
+```
+
+Once you have `devtools` and you were able to source this confusing "gist", we can use the function `phyloseq_to_ampvis2` to convert our phyloseq object to an ampvis2 object. If these steps do not work - don't worry. There are plenty of ways to analyze the data within phyloseq. There are even tutorials on how to [create heatmaps in phyloseq](https://joey711.github.io/phyloseq/plot_heatmap-examples.html), this is just another way to analyze the data. 
+
+If that is all working, we can create our ampvis2 object with: 
+
+```
+ampvis2_obj <- phyloseq_to_ampvis2(ps.all)
+```
+
+What's nice about the `ampvis2` package is it already performs normalization by calculating relative abundance when we load the object, and do not have to re-calculate it like we did with the phyloseq object.
+
+## Creating Heatmaps
+
+With the function `amp_heatmap` we can generate lots of different heatmaps. Lets look at the top 4 most abundant phyla across all of our samples: 
+
+```
+amp_heatmap(ampvis2_obj, tax_aggregate = "Phylum", tax_show=4, plot_colorscale = "sqrt", plot_values = FALSE) + theme(axis.text.y = element_text(size=8), legend.position="right")
+```
+
+<img src="img/amp1.png" align="center" width="800" height="400">
+
+We can also subset certain groups of samples within the `ampvis2` package. Let's look further at the Mudbucket samples. Let's create a heatmap showing the top 25 most abundant genera and also show their phyla names:
+
+```
+subset <- amp_subset_samples(ampvis2_obj, Group %in% c("Mudbucket"))
+amp_heatmap(subset, tax_aggregate = "Genus", tax_add = "Phylum", tax_show = 25, plot_colorscale = "sqrt", plot_values = FALSE)
+```
+
+<img src="img/amp2.png" align="center" width="800" height="400">
+
+You could also look at a boxplot of the mean read abundances for all samples: 
+
+```
+amp_boxplot(subset)
+```
+
+<img src="img/boxplot1.png" align="center" width="600" height="300">
+
+
+# Conclusions
+
+Overall, we've gone through: 
+
+- Cleaning and exploring amplicon sequencing data with `dplyr`
+- Creating microbiome visuals with `phyloseq`
+- Making heatmaps with `ampvis2`
+
+But also, you've learned a lot about working with data in R as a whole. Most of the `dplyr` commands we covered you could apply to any dataset to `select` certain columns, `filter` by specific criteria and perform analyses. Oftentimes you have multiple datasets you want to join together to perform anlayses on, and you can do that with the `left_join` function. Even using specific packages, you've learned by now that the most difficult part of bioinformatics is usually installation. If a developer includes quality documentation and help guides, it can be quick to go from raw data to different kinds of results.  
 
 
 
