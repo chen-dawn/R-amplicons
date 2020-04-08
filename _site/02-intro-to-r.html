@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title></title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Amplicon Analysis in R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="00-project-overview.html">Project Overview</a>
+</li>
+<li>
+  <a href="01-preprocessing.html">Preprocessing Sequences</a>
+</li>
+<li>
+  <a href="02-intro-to-r.html">Intro to R</a>
+</li>
+<li>
+  <a href="03-analyzing-amplicon-data.html">Analyzing Amplicon Data</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/elizabethmcd/R-amplicons">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<p><br></p>
+<div id="getting-started-in-r" class="section level1">
+<h1>Getting Started in R</h1>
+<p>The term “R” is used to refer to both the programming language and the software that interprets scripts written using it. RStudio is a popular way to not only write your R scripts but also to interact with the R software. To function correctly, RStudio needs R and therefore both need to be installed on your computer.</p>
+<p>You may be asking yourself - why should I learn R and not use a program like Excel to analyze my amplicon data and perform statistical analyses? There are a couple reasons R is generally a useful program and is really beneficial for using in 16S amplicon analyses:</p>
+<ol style="list-style-type: decimal">
+<li><strong>R is great for reproducibility</strong>: R doesn’t involve a lot of pointing and clicking, which is good because you have scripts instead to make it clear what you did instead of remembering a series of buttons you pushed. Your code can be shared with collaborators or people interested in your work in the future and they can easily reproduce your analyses.</li>
+<li><strong>R is interdisciplinary and extensive</strong>: There are 10,000+ packages that can be installed to extend the base R capabilities to apply statistical analyses and make graphics for image analysis, time series, genomics, and amplicon analyses, to name a couple of examples.</li>
+<li><strong>R produces high-quality graphics</strong>: Plotting functions are endless, and allow you to easily adjust any aspect of your figures</li>
+<li><strong>R is a free, open-source platform</strong>: More transparency, and constant updates to improve the user experience</li>
+<li><strong>R is a large and welcoming community</strong>: Thousands of people use R on a daily basis, and there are many ways to get help through the RStudio Blog, Stack Overflow, or google searches.</li>
+</ol>
+<div id="rstudio-interface" class="section level2">
+<h2>RStudio Interface</h2>
+<p>Let’s start by learning about <a href="https://www.rstudio.com/">RStudio</a>, which is an Integrated Development Environment (IDE) for working with R. The RStudio IDE open-source product is free under the <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">Affero General Public License (AGPL) v3</a>. The RStudio IDE is also available with a commercial license and priority email support from RStudio, Inc.</p>
+<p>We will use RStudio IDE to write code, navigate the files on our computer, inspect the variables we are going to create, and visualize the plots we will generate. RStudio can also be used for other things (e.g., version control, developing packages, writing Shiny apps) that we will not cover during the workshop.</p>
+<p>RStudio is divided into 4 “Panes”: the <strong>Source</strong> for your scripts and documents (top-left, in the default layout), your <strong>Environment/History</strong> (top-right), your <strong>Files/Plots/Packages/Help/Viewer</strong> (bottom-right), and the R <strong>Console</strong> (bottom-left). The placement of these panes and their content can be customized (see menu, Tools -&gt; Global Options -&gt; Pane Layout).</p>
+<p><img src="img/rstudio-interface.png" align="center" width="800"></p>
+<p>One of the advantages of using RStudio is that all the information you need to write code is available in a single window. Additionally, with many shortcuts, autocompletion, and highlighting for the major file types you use while developing in R, RStudio will make typing easier and less error-prone.</p>
+</div>
+<div id="getting-set-up" class="section level2">
+<h2>Getting set up</h2>
+<p>It is good practice to keep a set of related data, analyses, and text self-contained in a single folder, called the <strong>working directory</strong>. All of the scripts within this folder can then use <em>relative paths</em> to files that indicate where inside the project a file is located (as opposed to absolute paths, which point to where a file is on a specific computer). Working this way makes it a lot easier to move your project around on your computer and share it with others without worrying about whether or not the underlying scripts will still work.</p>
+<p>RStudio provides a helpful set of tools to do this through its “Projects” interface, which not only creates a working directory for you, but also remembers its location (allowing you to quickly navigate to it) and optionally preserves custom settings and open files to make it easier to resume work after a break. Go through the steps for creating an “R Project” for this tutorial below.</p>
+<ol style="list-style-type: decimal">
+<li>Start RStudio.</li>
+<li>Under the <code>File</code> menu, click on <code>New Project</code>. Choose <code>New Directory</code>, then <code>New Project</code>.</li>
+<li>Enter a name for this new folder (or “directory”), and choose a convenient location for it. This will be your <strong>working directory</strong> for the rest of the day (e.g., <code>~/amplicon-analysis</code>).</li>
+<li>Click on <code>Create Project</code>.</li>
+<li>(Optional) Set Preferences to ‘Never’ save workspace in RStudio.</li>
+</ol>
+<p>RStudio’s default preferences generally work well, but saving a workspace to .RData can be cumbersome, especially if you are working with larger datasets. To turn that off, go to Tools –&gt; ‘Global Options’ and select the ‘Never’ option for ‘Save workspace to .RData’ on exit.’</p>
+<div id="organizing-your-working-directory" class="section level3">
+<h3>Organizing your Working Directory</h3>
+<p>Using a consistent folder structure across your projects will help keep things organized, and will also make it easy to find/file things in the future. This can be especially helpful when you have multiple projects. In general, you may create directories (folders) for <strong>scripts</strong>, <strong>data</strong>, and <strong>documents</strong>.</p>
+<ul>
+<li><strong><code>data_raw/</code> &amp; <code>data/</code></strong> Use these folders to store raw data and intermediate datasets you may create for the need of a particular analysis. For the sake of transparency and <a href="https://en.wikipedia.org/wiki/Provenance">provenance</a>, you should <em>always</em> keep a copy of your raw data accessible and do as much of your data cleanup and preprocessing programmatically (i.e., with scripts, rather than manually) as possible. Separating raw data from processed data is also a good idea. For example, you could have files <code>data_raw/tree_survey.plot1.txt</code> and <code>...plot2.txt</code> kept separate from a <code>data/tree.survey.csv</code> file generated by the <code>scripts/01.preprocess.tree_survey.R</code> script.</li>
+<li><strong><code>documents/</code></strong> This would be a place to keep outlines, drafts, and other text.</li>
+<li><strong><code>scripts/</code></strong> This would be the location to keep your R scripts for different analyses or plotting, and potentially a separate folder for your functions (more on that later).</li>
+<li><strong>Additional (sub)directories</strong> depending on your project needs.</li>
+</ul>
+<p>For this workshop, we will need a <code>data_raw/</code> folder to store our raw data, and we will use <code>data/</code> for when we learn how to export data as CSV files, and a <code>fig/</code> folder for the figures that we will save.</p>
+<ul>
+<li>Under the <code>Files</code> tab on the right of the screen, click on <code>New Folder</code> and create a folder named <code>data_raw</code> within your newly created working directory (e.g., <code>~/data-carpentry/</code>). (Alternatively, type <code>dir.create(&quot;data_raw&quot;)</code> at your R console.) Repeat these operations to create a <code>data</code> and a <code>fig</code> folder.</li>
+</ul>
+<p>We are going to keep the script in the root of our working directory because we are only going to use one file and it will make things easier.</p>
+</div>
+<div id="the-working-directory" class="section level3">
+<h3>The Working Directory</h3>
+<p>The working directory is an important concept to understand. It is the place from where R will be looking for and saving the files. When you write code for your project, it should refer to files in relation to the root of your working directory and only need files within this structure.</p>
+<p>Using RStudio projects makes this easy and ensures that your working directory is set properly. If you need to check it, you can use <code>getwd()</code>. If for some reason your working directory is not what it should be, you can change it in the RStudio interface by navigating in the file browser where your working directory should be, and clicking on the blue gear icon “More”, and select “Set As Working Directory”. Alternatively you can use <code>setwd(&quot;/path/to/working/directory&quot;)</code> to reset your working directory. However, your scripts should not include this line because it will fail on someone else’s computer.</p>
+</div>
+</div>
+<div id="interacting-with-r" class="section level2">
+<h2>Interacting with R</h2>
+<p>The basis of programming is that we write down instructions for the computer to follow, and then we tell the computer to follow those instructions. We write, or <em>code</em>, instructions in R because it is a common language that both the computer and we can understand. We call the instructions <em>commands</em> and we tell the computer to follow the instructions by <em>executing</em> (also called <em>running</em>) those commands.</p>
+<p>There are two main ways of interacting with R: by using the console or by using script files (plain text files that contain your code). The console pane (in RStudio, the bottom left panel) is the place where commands written in the R language can be typed and executed immediately by the computer. It is also where the results will be shown for commands that have been executed. You can type commands directly into the console and press <code>Enter</code> to execute those commands, but they will be forgotten when you close the session.</p>
+<p>Because we want our code and workflow to be reproducible, it is better to type the commands we want in the script editor, and save the script. This way, there is a complete record of what we did, and anyone (including our future selves!) can easily replicate the results on their computer.</p>
+<p>RStudio allows you to execute commands directly from the script editor by using the <kbd><code>Ctrl</code></kbd> + <kbd><code>Enter</code></kbd> shortcut (on Macs, <kbd><code>Cmd</code></kbd> + <kbd><code>Return</code></kbd> will work, too). The command on the current line in the script (indicated by the cursor) or all of the commands in the currently selected text will be sent to the console and executed when you press <kbd><code>Ctrl</code></kbd> + <kbd><code>Enter</code></kbd>. You can find other keyboard shortcuts in this <a href="https://github.com/rstudio/cheatsheets/raw/master/rstudio-ide.pdf">RStudio cheatsheet about the RStudio IDE</a>.</p>
+<p>At some point in your analysis you may want to check the content of a variable or the structure of an object, without necessarily keeping a record of it in your script. You can type these commands and execute them directly in the console. RStudio provides the <kbd><code>Ctrl</code></kbd> + <kbd><code>1</code></kbd> and <kbd><code>Ctrl</code></kbd> + <kbd><code>2</code></kbd> shortcuts allow you to jump between the script and the console panes.</p>
+<p>If R is ready to accept commands, the R console shows a <code>&gt;</code> prompt. If it receives a command (by typing, copy-pasting or sent from the script editor using <kbd><code>Ctrl</code></kbd> + <kbd><code>Enter</code></kbd>), R will try to execute it, and when ready, will show the results and come back with a new <code>&gt;</code> prompt to wait for new commands.</p>
+<p>If R is still waiting for you to enter more data because it isn’t complete yet, the console will show a <code>+</code> prompt. It means that you haven’t finished entering a complete command. This is because you have not ‘closed’ a parenthesis or quotation, i.e. you don’t have the same number of left-parentheses as right-parentheses, or the same number of opening and closing quotation marks. When this happens, and you thought you finished typing your command, click inside the console window and press <kbd><code>Esc</code></kbd>; this will cancel the incomplete command and return you to the <code>&gt;</code> prompt.</p>
+<p><br></p>
+</div>
+</div>
+<div id="introduction-to-r" class="section level1">
+<h1>Introduction to R</h1>
+<hr />
+<blockquote>
+<p><strong>Learning Objectives</strong></p>
+<ul>
+<li>Define the following terms as they relate to R: object, assign, call, function, arguments, options.</li>
+<li>Assign values to objects in R.</li>
+<li>Learn how to <em>name</em> objects</li>
+<li>Use comments to inform script.</li>
+<li>Solve simple arithmetic operations in R.</li>
+<li>Call functions and use arguments to change their default options.</li>
+<li>Inspect the content of vectors and manipulate their content.</li>
+<li>Subset and extract values from vectors.</li>
+<li>Analyze vectors with missing data.</li>
+</ul>
+</blockquote>
+<hr />
+<div id="creating-objects-in-r" class="section level2">
+<h2>Creating Objects in R</h2>
+<p>You can get output from R simply by typing math in the console:</p>
+<pre class="r"><code>3 + 5</code></pre>
+<pre><code>## [1] 8</code></pre>
+<pre class="r"><code>12 / 7</code></pre>
+<pre><code>## [1] 1.714286</code></pre>
+<p>However, to do useful and interesting things, we need to assign <em>values</em> to <em>objects</em>. To create an object, we need to give it a name followed by the assignment operator <code>&lt;-</code>, and the value we want to give it:</p>
+<pre class="r"><code>weight_kg &lt;- 55</code></pre>
+<p><code>&lt;-</code> is the assignment operator. It assigns values on the right to objects on the left. So, after executing <code>x &lt;- 3</code>, the value of <code>x</code> is <code>3</code>. The arrow can be read as 3 <strong>goes into</strong> <code>x</code>. For historical reasons, you can also use <code>=</code> for assignments, but not in every context. Because of the <a href="https://blog.revolutionanalytics.com/2008/12/use-equals-or-arrow-for-assignment.html">slight</a> <a href="https://r.789695.n4.nabble.com/Is-there-any-difference-between-and-tp878594p878598.html">differences</a> in syntax, it is good practice to always use <code>&lt;-</code> for assignments.</p>
+<p>In RStudio, typing <kbd>Alt</kbd> + <kbd>-</kbd> (push <kbd>Alt</kbd> at the same time as the <kbd>-</kbd> key) will write <code>&lt;-</code> in a single keystroke in a PC, while typing <kbd>Option</kbd> + <kbd>-</kbd> (push <kbd>Option</kbd> at the same time as the <kbd>-</kbd> key) does the same in a Mac.</p>
+<p>Objects can be given any name such as <code>x</code>, <code>current_temperature</code>, or <code>subject_id</code>. You want your object names to be explicit and not too long. They cannot start with a number (<code>2x</code> is not valid, but <code>x2</code> is). R is case sensitive (e.g., <code>weight_kg</code> is different from <code>Weight_kg</code>). There are some names that cannot be used because they are the names of fundamental functions in R (e.g., <code>if</code>, <code>else</code>, <code>for</code>, see <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/Reserved.html">here</a> for a complete list). In general, even if it’s allowed, it’s best to not use other function names (e.g., <code>c</code>, <code>T</code>, <code>mean</code>, <code>data</code>, <code>df</code>, <code>weights</code>). If in doubt, check the help to see if the name is already in use. It’s also best to avoid dots (<code>.</code>) within names. Many function names in R itself have them and dots also have a special meaning (methods) in R and other programming languages. To avoid confusion, don’t include dots in names. It is also recommended to use nouns for object names, and verbs for function names. It’s important to be consistent in the styling of your code (where you put spaces, how you name objects, etc.). Using a consistent coding style makes your code clearer to read for your future self and your collaborators. In R, three popular style guides are <a href="https://google.github.io/styleguide/Rguide.xml">Google’s</a>, <a href="https://jef.works/R-style-guide/">Jean Fan’s</a> and the <a href="https://style.tidyverse.org/">tidyverse’s</a>. The tidyverse’s is very comprehensive and may seem overwhelming at first. You can install the <a href="https://github.com/jimhester/lintr"><strong><code>lintr</code></strong></a> package to automatically check for issues in the styling of your code.</p>
+<blockquote>
+<h3 id="objects-vs.variables">Objects vs. variables</h3>
+<p>What are known as <code>objects</code> in <code>R</code> are known as <code>variables</code> in many other programming languages. Depending on the context, <code>object</code> and <code>variable</code> can have drastically different meanings. However, in this lesson, the two words are used synonymously. For more information see: <a href="https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Objects" class="uri">https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Objects</a></p>
+</blockquote>
+<p>When assigning a value to an object, R does not print anything. You can force R to print the value by using parentheses or by typing the object name:</p>
+<pre class="r"><code>weight_kg &lt;- 55    # doesn&#39;t print anything
+(weight_kg &lt;- 55)  # but putting parenthesis around the call prints the value of `weight_kg`</code></pre>
+<pre><code>## [1] 55</code></pre>
+<pre class="r"><code>weight_kg          # and so does typing the name of the object</code></pre>
+<pre><code>## [1] 55</code></pre>
+<p>Now that R has <code>weight_kg</code> in memory, we can do arithmetic with it. For instance, we may want to convert this weight into pounds (weight in pounds is 2.2 times the weight in kg):</p>
+<pre class="r"><code>2.2 * weight_kg</code></pre>
+<pre><code>## [1] 121</code></pre>
+<p>We can also change an object’s value by assigning it a new one:</p>
+<pre class="r"><code>weight_kg &lt;- 57.5
+2.2 * weight_kg</code></pre>
+<pre><code>## [1] 126.5</code></pre>
+<p>This means that assigning a value to one object does not change the values of other objects For example, let’s store the animal’s weight in pounds in a new object, <code>weight_lb</code>:</p>
+<pre class="r"><code>weight_lb &lt;- 2.2 * weight_kg</code></pre>
+<p>and then change <code>weight_kg</code> to 100.</p>
+<pre class="r"><code>weight_kg &lt;- 100</code></pre>
+<p>What do you think is the current content of the object <code>weight_lb</code>? 126.5 or 220?</p>
+</div>
+<div id="comments" class="section level2">
+<h2>Comments</h2>
+<p>The comment character in R is <code>#</code>, anything to the right of a <code>#</code> in a script will be ignored by R. It is useful to leave notes and explanations in your scripts. RStudio makes it easy to comment or uncomment a paragraph: after selecting the lines you want to comment, press at the same time on your keyboard <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>. If you only want to comment out one line, you can put the cursor at any location of that line (i.e. no need to select the whole line), then press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>.</p>
+<blockquote>
+<h3 id="challenge">Challenge</h3>
+<p>What are the values after each statement in the following?</p>
+<pre class="r"><code>mass &lt;- 47.5            # mass?
+age  &lt;- 122             # age?
+mass &lt;- mass * 2.0      # mass?
+age  &lt;- age - 20        # age?
+mass_index &lt;- mass/age  # mass_index?</code></pre>
+</blockquote>
+</div>
+<div id="functions-and-their-arguments" class="section level2">
+<h2>Functions and their Arguments</h2>
+<p>Functions are “canned scripts” that automate more complicated sets of commands including operations assignments, etc. Many functions are predefined, or can be made available by importing R <em>packages</em> (more on that later). A function usually takes one or more inputs called <em>arguments</em>. Functions often (but not always) return a <em>value</em>. A typical example would be the function <code>sqrt()</code>. The input (the argument) must be a number, and the return value (in fact, the output) is the square root of that number. Executing a function (‘running it’) is called <em>calling</em> the function. An example of a function call is:</p>
+<pre class="r"><code>ten &lt;- sqrt(weight_kg)</code></pre>
+<p>Here, the value of <code>ten</code> is given to the <code>sqrt()</code> function, the <code>sqrt()</code> function calculates the square root, and returns the value which is then assigned to the object <code>weight_kg</code>. This function is very simple, because it takes just one argument.</p>
+<p>The return ‘value’ of a function need not be numerical (like that of <code>sqrt()</code>), and it also does not need to be a single item: it can be a set of things, or even a dataset. We’ll see that when we read data files into R.</p>
+<p>Arguments can be anything, not only numbers or filenames, but also other objects. Exactly what each argument means differs per function, and must be looked up in the documentation (see below). Some functions take arguments which may either be specified by the user, or, if left out, take on a <em>default</em> value: these are called <em>options</em>. Options are typically used to alter the way the function operates, such as whether it ignores ‘bad values’, or what symbol to use in a plot. However, if you want something specific, you can specify a value of your choice which will be used instead of the default.</p>
+<p>Let’s try a function that can take multiple arguments: <code>round()</code>.</p>
+<pre class="r"><code>round(3.14159)</code></pre>
+<pre><code>## [1] 3</code></pre>
+<p>Here, we’ve called <code>round()</code> with just one argument, <code>3.14159</code>, and it has returned the value <code>3</code>. That’s because the default is to round to the nearest whole number. If we want more digits we can see how to do that by getting information about the <code>round</code> function. We can use <code>args(round)</code> to find what arguments it takes, or look at the help for this function using <code>?round</code>.</p>
+<pre class="r"><code>args(round)</code></pre>
+<pre><code>## function (x, digits = 0) 
+## NULL</code></pre>
+<pre class="r"><code>?round</code></pre>
+<p>We see that if we want a different number of digits, we can type <code>digits = 2</code> or however many we want.</p>
+<pre class="r"><code>round(3.14159, digits = 2)</code></pre>
+<pre><code>## [1] 3.14</code></pre>
+<p>If you provide the arguments in the exact same order as they are defined you don’t have to name them:</p>
+<pre class="r"><code>round(3.14159, 2)</code></pre>
+<pre><code>## [1] 3.14</code></pre>
+<p>And if you do name the arguments, you can switch their order:</p>
+<pre class="r"><code>round(digits = 2, x = 3.14159)</code></pre>
+<pre><code>## [1] 3.14</code></pre>
+<p>It’s good practice to put the non-optional arguments (like the number you’re rounding) first in your function call, and to then specify the names of all optional arguments. If you don’t, someone reading your code might have to look up the definition of a function with unfamiliar arguments to understand what you’re doing.</p>
+</div>
+<div id="vectors-and-data-types" class="section level2">
+<h2>Vectors and Data Types</h2>
+<p>A vector is the most common and basic data type in R, and is pretty much the workhorse of R. A vector is composed by a series of values, which can be either numbers or characters. We can assign a series of values to a vector using the <code>c()</code> function. For example we can create a vector of animal weights and assign it to a new object <code>weight_g</code>:</p>
+<pre class="r"><code>weight_g &lt;- c(50, 60, 65, 82)
+weight_g</code></pre>
+<pre><code>## [1] 50 60 65 82</code></pre>
+<p>A vector can also contain characters:</p>
+<pre class="r"><code>animals &lt;- c(&quot;mouse&quot;, &quot;rat&quot;, &quot;dog&quot;)
+animals</code></pre>
+<pre><code>## [1] &quot;mouse&quot; &quot;rat&quot;   &quot;dog&quot;</code></pre>
+<p>The quotes around “mouse”, “rat”, etc. are essential here. Without the quotes R will assume objects have been created called <code>mouse</code>, <code>rat</code> and <code>dog</code>. As these objects don’t exist in R’s memory, there will be an error message.</p>
+<p>There are many functions that allow you to inspect the content of a vector. <code>length()</code> tells you how many elements are in a particular vector:</p>
+<pre class="r"><code>length(weight_g)</code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre class="r"><code>length(animals)</code></pre>
+<pre><code>## [1] 3</code></pre>
+<p>An important feature of a vector, is that all of the elements are the same type of data. The function <code>class()</code> indicates the class (the type of element) of an object:</p>
+<pre class="r"><code>class(weight_g)</code></pre>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="r"><code>class(animals)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<p>The function <code>str()</code> provides an overview of the structure of an object and its elements. It is a useful function when working with large and complex objects:</p>
+<pre class="r"><code>str(weight_g)</code></pre>
+<pre><code>##  num [1:4] 50 60 65 82</code></pre>
+<pre class="r"><code>str(animals)</code></pre>
+<pre><code>##  chr [1:3] &quot;mouse&quot; &quot;rat&quot; &quot;dog&quot;</code></pre>
+<p>You can use the <code>c()</code> function to add other elements to your vector:</p>
+<pre class="r"><code>weight_g &lt;- c(weight_g, 90) # add to the end of the vector
+weight_g &lt;- c(30, weight_g) # add to the beginning of the vector
+weight_g</code></pre>
+<pre><code>## [1] 30 50 60 65 82 90</code></pre>
+<p>In the first line, we take the original vector <code>weight_g</code>, add the value <code>90</code> to the end of it, and save the result back into <code>weight_g</code>. Then we add the value <code>30</code> to the beginning, again saving the result back into <code>weight_g</code>.</p>
+<p>We can do this over and over again to grow a vector, or assemble a dataset. As we program, this may be useful to add results that we are collecting or calculating.</p>
+<p>An <strong>atomic vector</strong> is the simplest R <strong>data type</strong> and is a linear vector of a single type. Above, we saw 2 of the 6 main <strong>atomic vector</strong> types that R uses: <code>&quot;character&quot;</code> and <code>&quot;numeric&quot;</code> (or <code>&quot;double&quot;</code>). These are the basic building blocks that all R objects are built from. The other 4 <strong>atomic vector</strong> types are:</p>
+<ul>
+<li><code>&quot;logical&quot;</code> for <code>TRUE</code> and <code>FALSE</code> (the boolean data type)</li>
+<li><code>&quot;integer&quot;</code> for integer numbers (e.g., <code>2L</code>, the <code>L</code> indicates to R that it’s an integer)</li>
+<li><code>&quot;complex&quot;</code> to represent complex numbers with real and imaginary parts (e.g., <code>1 + 4i</code>) and that’s all we’re going to say about them</li>
+<li><code>&quot;raw&quot;</code> for bitstreams that we won’t discuss further</li>
+</ul>
+<p>You can check the type of your vector using the <code>typeof()</code> function and inputting your vector as the argument.</p>
+<p>Vectors are one of the many <strong>data structures</strong> that R uses. Other important ones are lists (<code>list</code>), matrices (<code>matrix</code>), data frames (<code>data.frame</code>), factors (<code>factor</code>) and arrays (<code>array</code>).</p>
+</div>
+<div id="subsetting-vectors" class="section level2">
+<h2>Subsetting vectors</h2>
+<p>If we want to extract one or several values from a vector, we must provide one or several indices in square brackets. For instance:</p>
+<pre class="r"><code>animals &lt;- c(&quot;mouse&quot;, &quot;rat&quot;, &quot;dog&quot;, &quot;cat&quot;)
+animals[2]</code></pre>
+<pre><code>## [1] &quot;rat&quot;</code></pre>
+<pre class="r"><code>animals[c(3, 2)]</code></pre>
+<pre><code>## [1] &quot;dog&quot; &quot;rat&quot;</code></pre>
+<p>We can also repeat the indices to create an object with more elements than the original one:</p>
+<pre class="r"><code>more_animals &lt;- animals[c(1, 2, 3, 2, 1, 4)]
+more_animals</code></pre>
+<pre><code>## [1] &quot;mouse&quot; &quot;rat&quot;   &quot;dog&quot;   &quot;rat&quot;   &quot;mouse&quot; &quot;cat&quot;</code></pre>
+<p>R indices start at 1. Programming languages like Fortran, MATLAB, Julia, and R start counting at 1, because that’s what human beings typically do. Languages in the C family (including C++, Java, Perl, and Python) count from 0 because that’s simpler for computers to do.</p>
+<div id="conditional-subsetting" class="section level3">
+<h3>Conditional subsetting</h3>
+<p>Another common way of subsetting is by using a logical vector. <code>TRUE</code> will select the element with the same index, while <code>FALSE</code> will not:</p>
+<pre class="r"><code>weight_g &lt;- c(21, 34, 39, 54, 55)
+weight_g[c(TRUE, FALSE, FALSE, TRUE, TRUE)]</code></pre>
+<pre><code>## [1] 21 54 55</code></pre>
+<p>Typically, these logical vectors are not typed by hand, but are the output of other functions or logical tests. For instance, if you wanted to select only the values above 50:</p>
+<pre class="r"><code>weight_g &gt; 50    # will return logicals with TRUE for the indices that meet the condition</code></pre>
+<pre><code>## [1] FALSE FALSE FALSE  TRUE  TRUE</code></pre>
+<pre class="r"><code>## so we can use this to select only the values above 50
+weight_g[weight_g &gt; 50]</code></pre>
+<pre><code>## [1] 54 55</code></pre>
+<p>You can combine multiple tests using <code>&amp;</code> (both conditions are true, AND) or <code>|</code> (at least one of the conditions is true, OR):</p>
+<pre class="r"><code>weight_g[weight_g &lt; 30 | weight_g &gt; 50]</code></pre>
+<pre><code>## [1] 21 54 55</code></pre>
+<pre class="r"><code>weight_g[weight_g &gt;= 30 &amp; weight_g == 21]</code></pre>
+<pre><code>## numeric(0)</code></pre>
+<p>Here, <code>&lt;</code> stands for “less than”, <code>&gt;</code> for “greater than”, <code>&gt;=</code> for “greater than or equal to”, and <code>==</code> for “equal to”. The double equal sign <code>==</code> is a test for numerical equality between the left and right hand sides, and should not be confused with the single <code>=</code> sign, which performs variable assignment (similar to <code>&lt;-</code>).</p>
+<p>A common task is to search for certain strings in a vector. One could use the “or” operator <code>|</code> to test for equality to multiple values, but this can quickly become tedious. The function <code>%in%</code> allows you to test if any of the elements of a search vector are found:</p>
+<pre class="r"><code>animals &lt;- c(&quot;mouse&quot;, &quot;rat&quot;, &quot;dog&quot;, &quot;cat&quot;)
+animals[animals == &quot;cat&quot; | animals == &quot;rat&quot;] # returns both rat and cat</code></pre>
+<pre><code>## [1] &quot;rat&quot; &quot;cat&quot;</code></pre>
+<pre class="r"><code>animals %in% c(&quot;rat&quot;, &quot;cat&quot;, &quot;dog&quot;, &quot;duck&quot;, &quot;goat&quot;)</code></pre>
+<pre><code>## [1] FALSE  TRUE  TRUE  TRUE</code></pre>
+<pre class="r"><code>animals[animals %in% c(&quot;rat&quot;, &quot;cat&quot;, &quot;dog&quot;, &quot;duck&quot;, &quot;goat&quot;)]</code></pre>
+<pre><code>## [1] &quot;rat&quot; &quot;dog&quot; &quot;cat&quot;</code></pre>
+</div>
+</div>
+<div id="missing-data" class="section level2">
+<h2>Missing data</h2>
+<p>As R was designed to analyze datasets, it includes the concept of missing data (which is uncommon in other programming languages). Missing data are represented in vectors as <code>NA</code>.</p>
+<p>When doing operations on numbers, most functions will return <code>NA</code> if the data you are working with include missing values. This feature makes it harder to overlook the cases where you are dealing with missing data. You can add the argument <code>na.rm = TRUE</code> to calculate the result while ignoring the missing values.</p>
+<pre class="r"><code>heights &lt;- c(2, 4, 4, NA, 6)
+mean(heights)</code></pre>
+<pre><code>## [1] NA</code></pre>
+<pre class="r"><code>max(heights)</code></pre>
+<pre><code>## [1] NA</code></pre>
+<pre class="r"><code>mean(heights, na.rm = TRUE)</code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre class="r"><code>max(heights, na.rm = TRUE)</code></pre>
+<pre><code>## [1] 6</code></pre>
+<p>If your data include missing values, you may want to become familiar with the functions <code>is.na()</code>, <code>na.omit()</code>, and <code>complete.cases()</code>. See below for examples.</p>
+<pre class="r"><code>## Extract those elements which are not missing values.
+heights[!is.na(heights)]</code></pre>
+<pre><code>## [1] 2 4 4 6</code></pre>
+<pre class="r"><code>## Returns the object with incomplete cases removed. The returned object is an atomic vector of type `&quot;numeric&quot;` (or `&quot;double&quot;`).
+na.omit(heights)</code></pre>
+<pre><code>## [1] 2 4 4 6
+## attr(,&quot;na.action&quot;)
+## [1] 4
+## attr(,&quot;class&quot;)
+## [1] &quot;omit&quot;</code></pre>
+<pre class="r"><code>## Extract those elements which are complete cases. The returned object is an atomic vector of type `&quot;numeric&quot;` (or `&quot;double&quot;`).
+heights[complete.cases(heights)]</code></pre>
+<pre><code>## [1] 2 4 4 6</code></pre>
+<p>Recall that you can use the <code>typeof()</code> function to find the type of your atomic vector.</p>
+<blockquote>
+<h3 id="challenge-1">Challenge</h3>
+<ol style="list-style-type: decimal">
+<li><p>Using this vector of heights in inches, create a new vector, <code>heights_no_na</code>, with the NAs removed.</p>
+<pre class="r"><code>heights &lt;- c(63, 69, 60, 65, NA, 68, 61, 70, 61, 59, 64, 69, 63, 63, NA, 72, 65, 64, 70, 63, 65)</code></pre></li>
+<li><p>Use the function <code>median()</code> to calculate the median of the <code>heights</code> vector.</p></li>
+<li><p>Use R to figure out how many people in the set are taller than 67 inches.</p></li>
+</ol>
+<pre class="r"><code>heights &lt;- c(63, 69, 60, 65, NA, 68, 61, 70, 61, 59, 64, 69, 63, 63, NA, 72, 65, 64, 70, 63, 65)
+
+# 1.
+heights_no_na &lt;- heights[!is.na(heights)] 
+# or
+heights_no_na &lt;- na.omit(heights)
+# or
+heights_no_na &lt;- heights[complete.cases(heights)]
+
+# 2.
+median(heights, na.rm = TRUE)</code></pre>
+<pre><code>## [1] 64</code></pre>
+<pre class="r"><code># 3.
+heights_above_67 &lt;- heights_no_na[heights_no_na &gt; 67]
+length(heights_above_67)</code></pre>
+<pre><code>## [1] 6</code></pre>
+</blockquote>
+<p>Now that we have learned how to write scripts, and the basics of R’s data structures, we are ready to start working with the Portal dataset we have been using in the other lessons, and learn about data frames.</p>
+</div>
+</div>
+<div id="working-with-data" class="section level1">
+<h1>Working with Data</h1>
+<hr />
+<blockquote>
+<p><strong>Learning Objectives</strong></p>
+<ul>
+<li>Load external data from a .csv file into a data frame.</li>
+<li>Describe what a data frame is.</li>
+<li>Summarize the contents of a data frame.</li>
+<li>Use indexing to subset specific portions of data frames.</li>
+<li>Describe what a factor is.</li>
+<li>Convert between strings and factors.</li>
+<li>Reorder and rename factors.</li>
+<li>Change how character strings are handled in a data frame.</li>
+<li>Format dates.</li>
+</ul>
+</blockquote>
+<hr />
+<div id="presentation-of-the-survey-data" class="section level2">
+<h2>Presentation of the Survey Data</h2>
+<p>We are studying the species repartition and weight of animals caught in plots in our study area. The dataset is stored as a comma separated value (CSV) file. Each row holds information for a single animal, and the columns represent:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>record_id</td>
+<td>Unique id for the observation</td>
+</tr>
+<tr class="even">
+<td>month</td>
+<td>month of observation</td>
+</tr>
+<tr class="odd">
+<td>day</td>
+<td>day of observation</td>
+</tr>
+<tr class="even">
+<td>year</td>
+<td>year of observation</td>
+</tr>
+<tr class="odd">
+<td>plot_id</td>
+<td>ID of a particular plot</td>
+</tr>
+<tr class="even">
+<td>species_id</td>
+<td>2-letter code</td>
+</tr>
+<tr class="odd">
+<td>sex</td>
+<td>sex of animal (“M”, “F”)</td>
+</tr>
+<tr class="even">
+<td>hindfoot_length</td>
+<td>length of the hindfoot in mm</td>
+</tr>
+<tr class="odd">
+<td>weight</td>
+<td>weight of the animal in grams</td>
+</tr>
+<tr class="even">
+<td>genus</td>
+<td>genus of animal</td>
+</tr>
+<tr class="odd">
+<td>species</td>
+<td>species of animal</td>
+</tr>
+<tr class="even">
+<td>taxon</td>
+<td>e.g. Rodent, Reptile, Bird, Rabbit</td>
+</tr>
+<tr class="odd">
+<td>plot_type</td>
+<td>type of plot</td>
+</tr>
+</tbody>
+</table>
+<p>We are going to use the R function <code>download.file()</code> to download the CSV file that contains the survey data from Figshare, and we will use <code>read.csv()</code> to load into memory the content of the CSV file as an object of class <code>data.frame</code>. Inside the download.file command, the first entry is a character string with the source URL (“<a href="https://ndownloader.figshare.com/files/2292169" class="uri">https://ndownloader.figshare.com/files/2292169</a>”). This source URL downloads a CSV file from figshare. The text after the comma (“data_raw/portal_data_joined.csv”) is the destination of the file on your local machine. You’ll need to have a folder on your machine called “data_raw” where you’ll download the file. So this command downloads a file from Figshare, names it “portal_data_joined.csv” and adds it to a preexisting folder named “data_raw”.</p>
+<pre class="r"><code>download.file(url = &quot;https://ndownloader.figshare.com/files/2292169&quot;,
+              destfile = &quot;data_raw/portal_data_joined.csv&quot;)</code></pre>
+<p>You are now ready to load the data:</p>
+<pre class="r"><code>surveys &lt;- read.csv(&quot;data_raw/portal_data_joined.csv&quot;)</code></pre>
+<p>This statement doesn’t produce any output because, as you might recall, assignments don’t display anything. If we want to check that our data has been loaded, we can see the contents of the data frame by typing its name: <code>surveys</code>.</p>
+<p>Wow… that was a lot of output. At least it means the data loaded properly. Let’s check the top (the first 6 lines) of this data frame using the function <code>head()</code>:</p>
+<pre class="r"><code>head(surveys)</code></pre>
+<pre class="r"><code>## Try also
+View(surveys)</code></pre>
+<blockquote>
+<h3 id="note">Note</h3>
+<p><code>read.csv</code> assumes that fields are delineated by commas, however, in several countries, the comma is used as a decimal separator and the semicolon (;) is used as a field delineator. If you want to read in this type of files in R, you can use the <code>read.csv2</code> function. It behaves exactly like <code>read.csv</code> but uses different parameters for the decimal and the field separators. If you are working with another format, they can be both specified by the user. Check out the help for <code>read.csv()</code> by typing <code>?read.csv</code> to learn more. There is also the <code>read.delim()</code> for in tab separated data files. It is important to note that all of these functions are actually wrapper functions for the main <code>read.table()</code> function with different arguments. As such, the surveys data above could have also been loaded by using <code>read.table()</code> with the separation argument as <code>,</code>. The code is as follows: <code>surveys &lt;- read.table(file=&quot;data_raw/portal_data_joined.csv&quot;, sep=&quot;,&quot;, header=TRUE)</code>. The header argument has to be set to TRUE to be able to read the headers as by default <code>read.table()</code> has the header argument set to FALSE.</p>
+<p>In addition to the above versions of the csv format, you should develop the habits of looking at and record some parameters of your csv files. For instance, the character encoding, control characters used for line ending, date format (if the date is not splitted into three variables), and the presence of unexpected <a href="https://en.wikipedia.org/wiki/Newline">newlines</a> are important characteristics of your data files. Those parameters will ease up the import step of your data in R.</p>
+</blockquote>
+</div>
+<div id="what-are-data-frames" class="section level2">
+<h2>What are data frames?</h2>
+<p>Data frames are the <em>de facto</em> data structure for most tabular data, and what we use for statistics and plotting.</p>
+<p>A data frame can be created by hand, but most commonly they are generated by the functions <code>read.csv()</code> or <code>read.table()</code>; in other words, when importing spreadsheets from your hard drive (or the web).</p>
+<p>A data frame is the representation of data in the format of a table where the columns are vectors that all have the same length. Because columns are vectors, each column must contain a single type of data (e.g., characters, integers, factors). For example, here is a figure depicting a data frame comprising a numeric, a character, and a logical vector.</p>
+<p>We can see this when inspecting the <b>str</b>ucture of a data frame with the function <code>str()</code>:</p>
+<pre class="r"><code>str(surveys)</code></pre>
+</div>
+<div id="inspecting-data.frame-objects" class="section level2">
+<h2>Inspecting <code>data.frame</code> Objects</h2>
+<p>We already saw how the functions <code>head()</code> and <code>str()</code> can be useful to check the content and the structure of a data frame. Here is a non-exhaustive list of functions to get a sense of the content/structure of the data. Let’s try them out!</p>
+<ul>
+<li>Size:
+<ul>
+<li><code>dim(surveys)</code> - returns a vector with the number of rows in the first element, and the number of columns as the second element (the <strong>dim</strong>ensions of the object)</li>
+<li><code>nrow(surveys)</code> - returns the number of rows</li>
+<li><code>ncol(surveys)</code> - returns the number of columns</li>
+</ul></li>
+<li>Content:
+<ul>
+<li><code>head(surveys)</code> - shows the first 6 rows</li>
+<li><code>tail(surveys)</code> - shows the last 6 rows</li>
+</ul></li>
+<li>Names:
+<ul>
+<li><code>names(surveys)</code> - returns the column names (synonym of <code>colnames()</code> for <code>data.frame</code> objects)</li>
+<li><code>rownames(surveys)</code> - returns the row names</li>
+</ul></li>
+<li>Summary:
+<ul>
+<li><code>str(surveys)</code> - structure of the object and information about the class, length and content of each column</li>
+<li><code>summary(surveys)</code> - summary statistics for each column Note: most of these functions are “generic”, they can be used on other types of objects besides <code>data.frame</code>.</li>
+</ul></li>
+</ul>
+<p>Note: most of these functions are “generic”, they can be used on other types of objects besides <code>data.frame</code>.</p>
+<pre class="r"><code>## Challenge
+## Based on the output of `str(surveys)`, can you answer the following questions?
+## * What is the class of the object `surveys`?
+## * How many rows and how many columns are in this object?
+## * How many species have been recorded during these surveys?</code></pre>
+</div>
+<div id="indexing-and-subsetting-data-frames" class="section level2">
+<h2>Indexing and subsetting data frames</h2>
+<p>Our survey data frame has rows and columns (it has 2 dimensions), if we want to extract some specific data from it, we need to specify the “coordinates” we want from it. Row numbers come first, followed by column numbers. However, note that different ways of specifying these coordinates lead to results with different classes.</p>
+<pre class="r"><code># first element in the first column of the data frame (as a vector)
+surveys[1, 1]   
+# first element in the 6th column (as a vector)
+surveys[1, 6]   
+# first column of the data frame (as a vector)
+surveys[, 1]    
+# first column of the data frame (as a data.frame)
+surveys[1]      
+# first three elements in the 7th column (as a vector)
+surveys[1:3, 7] 
+# the 3rd row of the data frame (as a data.frame)
+surveys[3, ]    
+# equivalent to head_surveys &lt;- head(surveys)
+head_surveys &lt;- surveys[1:6, ] </code></pre>
+<p><code>:</code> is a special function that creates numeric vectors of integers in increasing or decreasing order, test <code>1:10</code> and <code>10:1</code> for instance. You can also exclude certain indices of a data frame using the “<code>-</code>” sign:</p>
+<pre class="r"><code>surveys[, -1]          # The whole data frame, except the first column
+surveys[-c(7:34786), ] # Equivalent to head(surveys)</code></pre>
+<p>Data frames can be subset by calling indices (as shown previously), but also by calling their column names directly:</p>
+<pre class="r"><code>surveys[&quot;species_id&quot;]       # Result is a data.frame
+surveys[, &quot;species_id&quot;]     # Result is a vector
+surveys[[&quot;species_id&quot;]]     # Result is a vector
+surveys$species_id          # Result is a vector</code></pre>
+<p>In RStudio, you can use the autocompletion feature to get the full and correct names of the columns.</p>
+<blockquote>
+<p><strong>Challenge</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Create a <code>data.frame</code> (<code>surveys_200</code>) containing only the data in row 200 of the <code>surveys</code> dataset.</p></li>
+<li><p>Notice how <code>nrow()</code> gave you the number of rows in a <code>data.frame</code>?</p>
+<ul>
+<li>Use that number to pull out just that last row in the data frame.</li>
+<li>Compare that with what you see as the last row using <code>tail()</code> to make sure it’s meeting expectations.</li>
+<li>Pull out that last row using <code>nrow()</code> instead of the row number.</li>
+<li>Create a new data frame (<code>surveys_last</code>) from that last row.</li>
+</ul></li>
+<li><p>Use <code>nrow()</code> to extract the row that is in the middle of the data frame. Store the content of this row in an object named <code>surveys_middle</code>.</p></li>
+<li><p>Combine <code>nrow()</code> with the <code>-</code> notation above to reproduce the behavior of <code>head(surveys)</code>, keeping just the first through 6th rows of the surveys dataset.</p></li>
+</ol>
+</blockquote>
+</div>
+<div id="factors" class="section level2">
+<h2>Factors</h2>
+<p>When we did <code>str(surveys)</code> we saw that several of the columns consist of integers. The columns <code>genus</code>, <code>species</code>, <code>sex</code>, <code>plot_type</code>, … however, are of a special class called <code>factor</code>. Factors are very useful and actually contribute to making R particularly well suited to working with data. So we are going to spend a little time introducing them. Factors represent categorical data. They are stored as integers associated with labels and they can be ordered or unordered. While factors look (and often behave) like character vectors, they are actually treated as integer vectors by R. So you need to be very careful when treating them as strings. Once created, factors can only contain a pre-defined set of values, known as <em>levels</em>. By default, R always sorts levels in alphabetical order. For instance, if you have a factor with 2 levels:</p>
+<pre class="r"><code>sex &lt;- factor(c(&quot;male&quot;, &quot;female&quot;, &quot;female&quot;, &quot;male&quot;))</code></pre>
+<p>R will assign <code>1</code> to the level <code>&quot;female&quot;</code> and <code>2</code> to the level <code>&quot;male&quot;</code> (because <code>f</code> comes before <code>m</code>, even though the first element in this vector is <code>&quot;male&quot;</code>). You can see this by using the function <code>levels()</code> and you can find the number of levels using <code>nlevels()</code>:</p>
+<pre class="r"><code>levels(sex)
+nlevels(sex)</code></pre>
+<p>Sometimes, the order of the factors does not matter, other times you might want to specify the order because it is meaningful (e.g., “low”, “medium”, “high”), it improves your visualization, or it is required by a particular type of analysis. Here, one way to reorder our levels in the <code>sex</code> vector would be:</p>
+<pre class="r"><code>sex # current order
+sex &lt;- factor(sex, levels = c(&quot;male&quot;, &quot;female&quot;))
+sex # after re-ordering</code></pre>
+<p>In R’s memory, these factors are represented by integers (1, 2, 3), but are more informative than integers because factors are self describing: <code>&quot;female&quot;</code>, <code>&quot;male&quot;</code> is more descriptive than <code>1</code>, <code>2</code>. Which one is “male”? You wouldn’t be able to tell just from the integer data. Factors, on the other hand, have this information built in. It is particularly helpful when there are many levels (like the species names in our example dataset).</p>
+</div>
+</div>
+<div id="using-the-tidyverse" class="section level1">
+<h1>Using the Tidyverse</h1>
+<hr />
+<blockquote>
+<p><strong>Learning Objectives</strong></p>
+<ul>
+<li>Describe the purpose of the <strong><code>dplyr</code></strong> and <strong><code>tidyr</code></strong> packages.</li>
+<li>Select certain columns in a data frame with the <strong><code>dplyr</code></strong> function <code>select</code>.</li>
+<li>Select certain rows in a data frame according to filtering conditions with the <strong><code>dplyr</code></strong> function <code>filter</code> .</li>
+<li>Link the output of one <strong><code>dplyr</code></strong> function to the input of another function with the ‘pipe’ operator <code>%&gt;%</code>.</li>
+<li>Add new columns to a data frame that are functions of existing columns with <code>mutate</code>.</li>
+<li>Use the split-apply-combine concept for data analysis.</li>
+<li>Use <code>summarize</code>, <code>group_by</code>, and <code>count</code> to split a data frame into groups of observations, apply summary statistics for each group, and then combine the results.</li>
+<li>Describe the concept of a wide and a long table format and for which purpose those formats are useful.</li>
+<li>Describe what key-value pairs are.</li>
+<li>Reshape a data frame from long to wide format and back with the <code>spread</code> and <code>gather</code> commands from the <strong><code>tidyr</code></strong> package.</li>
+<li>Export a data frame to a .csv file.</li>
+</ul>
+</blockquote>
+<hr />
+<div id="data-manipulation-using-dplyr-and-tidyr" class="section level2">
+<h2>Data manipulation using <strong><code>dplyr</code></strong> and <strong><code>tidyr</code></strong></h2>
+<p>Bracket subsetting is handy, but it can be cumbersome and difficult to read, especially for complicated operations. Enter <strong><code>dplyr</code></strong>. <strong><code>dplyr</code></strong> is a package for making tabular data manipulation easier. It pairs nicely with <strong><code>tidyr</code></strong> which enables you to swiftly convert between different data formats for plotting and analysis.</p>
+<p>Packages in R are basically sets of additional functions that let you do more stuff. The functions we’ve been using so far, like <code>str()</code> or <code>data.frame()</code>, come built into R; packages give you access to more of them. Before you use a package for the first time you need to install it on your machine, and then you should import it in every subsequent R session when you need it. You should already have installed the <strong><code>tidyverse</code></strong> package. This is an “umbrella-package” that installs several packages useful for data analysis which work together well such as <strong><code>tidyr</code></strong>, <strong><code>dplyr</code></strong>, <strong><code>ggplot2</code></strong>, <strong><code>tibble</code></strong>, etc.</p>
+<p>The <strong><code>tidyverse</code></strong> package tries to address 3 common issues that arise when doing data analysis with some of the functions that come with R:</p>
+<ol style="list-style-type: decimal">
+<li>The results from a base R function sometimes depend on the type of data.</li>
+<li>Using R expressions in a non standard way, which can be confusing for new learners.</li>
+<li>Hidden arguments, having default operations that new learners are not aware of.</li>
+</ol>
+<p>We have seen in our previous lesson that when building or importing a data frame, the columns that contain characters (i.e., text) are coerced (=converted) into the <code>factor</code> data type. We had to set <strong><code>stringsAsFactors</code></strong> to <strong><code>FALSE</code></strong> to avoid this hidden argument to convert our data type.</p>
+<p>This time we will use the <strong><code>tidyverse</code></strong> package to read the data and avoid having to set <strong><code>stringsAsFactors</code></strong> to <strong><code>FALSE</code></strong></p>
+<p>If we haven’t already done so, we can type <code>install.packages(&quot;tidyverse&quot;)</code> straight into the console. In fact, it’s better to write this in the console than in our script for any package, as there’s no need to re-install packages every time we run the script.</p>
+<p>Then, to load the package type:</p>
+<pre class="r"><code>## load the tidyverse packages, incl. dplyr
+library(tidyverse)</code></pre>
+</div>
+<div id="what-are-dplyr-and-tidyr" class="section level2">
+<h2>What are <strong><code>dplyr</code></strong> and <strong><code>tidyr</code></strong>?</h2>
+<p>The package <strong><code>dplyr</code></strong> provides easy tools for the most common data manipulation tasks. It is built to work directly with data frames, with many common tasks optimized by being written in a compiled language (C++). An additional feature is the ability to work directly with data stored in an external database. The benefits of doing this are that the data can be managed natively in a relational database, queries can be conducted on that database, and only the results of the query are returned.</p>
+<p>This addresses a common problem with R in that all operations are conducted in-memory and thus the amount of data you can work with is limited by available memory. The database connections essentially remove that limitation in that you can connect to a database of many hundreds of GB, conduct queries on it directly, and pull back into R only what you need for analysis.</p>
+<p>The package <strong><code>tidyr</code></strong> addresses the common problem of wanting to reshape your data for plotting and use by different R functions. Sometimes we want data sets where we have one row per measurement. Sometimes we want a data frame where each measurement type has its own column, and rows are instead more aggregated groups - like plots or aquaria. Moving back and forth between these formats is non-trivial, and <strong><code>tidyr</code></strong> gives you tools for this and more sophisticated data manipulation.</p>
+<p>To learn more about <strong><code>dplyr</code></strong> and <strong><code>tidyr</code></strong> after the workshop, you may want to check out this <a href="https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf">handy data transformation with <strong><code>dplyr</code></strong> cheatsheet</a> and this <a href="https://github.com/rstudio/cheatsheets/raw/master/data-import.pdf">one about <strong><code>tidyr</code></strong></a>.</p>
+<p>We’ll read in our data using the <code>read_csv()</code> function, from the tidyverse package <strong><code>readr</code></strong>, instead of <code>read.csv()</code>.</p>
+<pre class="r"><code>surveys &lt;- read_csv(&quot;data_raw/portal_data_joined.csv&quot;)</code></pre>
+<p>You will see the message <code>Parsed with column specification</code>, followed by each column name and its data type. When you execute <code>read_csv</code> on a data file, it looks through the first 1000 rows of each column and guesses the data type for each column as it reads it into R. For example, in this dataset, <code>read_csv</code> reads <code>weight</code> as <code>col_double</code> (a numeric data type), and <code>species</code> as <code>col_character</code>. You have the option to specify the data type for a column manually by using the <code>col_types</code> argument in <code>read_csv</code>.</p>
+<pre class="r"><code>## inspect the data
+str(surveys)</code></pre>
+<pre class="r"><code>## preview the data
+View(surveys)</code></pre>
+<p>Notice that the class of the data is now <code>tbl_df</code></p>
+<p>This is referred to as a “tibble”. Tibbles tweak some of the behaviors of the data frame objects we introduced in the previous episode. The data structure is very similar to a data frame. For our purposes the only differences are that:</p>
+<ol style="list-style-type: decimal">
+<li>In addition to displaying the data type of each column under its name, it only prints the first few rows of data and only as many columns as fit on one screen.</li>
+<li>Columns of class <code>character</code> are never converted into factors.</li>
+</ol>
+<p>We’re going to learn some of the most common <strong><code>dplyr</code></strong> functions:</p>
+<ul>
+<li><code>select()</code>: subset columns</li>
+<li><code>filter()</code>: subset rows on conditions</li>
+<li><code>mutate()</code>: create new columns by using information from other columns</li>
+<li><code>group_by()</code> and <code>summarize()</code>: create summary statistics on grouped data</li>
+<li><code>arrange()</code>: sort results</li>
+<li><code>count()</code>: count discrete values</li>
+</ul>
+</div>
+<div id="selecting-columns-and-filtering-rows" class="section level2">
+<h2>Selecting columns and filtering rows</h2>
+<p>To select columns of a data frame, use <code>select()</code>. The first argument to this function is the data frame (<code>surveys</code>), and the subsequent arguments are the columns to keep.</p>
+<pre class="r"><code>select(surveys, plot_id, species_id, weight)</code></pre>
+<p>To select all columns <em>except</em> certain ones, put a “-” in front of the variable to exclude it.</p>
+<pre class="r"><code>select(surveys, -record_id, -species_id)</code></pre>
+<p>This will select all the variables in <code>surveys</code> except <code>record_id</code> and <code>species_id</code>.</p>
+<p>To choose rows based on a specific criterion, use <code>filter()</code>:</p>
+<pre class="r"><code>filter(surveys, year == 1995)</code></pre>
+</div>
+<div id="pipes" class="section level2">
+<h2>Pipes</h2>
+<p>What if you want to select and filter at the same time? There are three ways to do this: use intermediate steps, nested functions, or pipes.</p>
+<p>With intermediate steps, you create a temporary data frame and use that as input to the next function, like this:</p>
+<pre class="r"><code>surveys2 &lt;- filter(surveys, weight &lt; 5)
+surveys_sml &lt;- select(surveys2, species_id, sex, weight)</code></pre>
+<p>This is readable, but can clutter up your workspace with lots of objects that you have to name individually. With multiple steps, that can be hard to keep track of.</p>
+<p>You can also nest functions (i.e. one function inside of another), like this:</p>
+<pre class="r"><code>surveys_sml &lt;- select(filter(surveys, weight &lt; 5), species_id, sex, weight)</code></pre>
+<p>This is handy, but can be difficult to read if too many functions are nested, as R evaluates the expression from the inside out (in this case, filtering, then selecting).</p>
+<p>The last option, <em>pipes</em>, are a recent addition to R. Pipes let you take the output of one function and send it directly to the next, which is useful when you need to do many things to the same dataset. Pipes in R look like <code>%&gt;%</code> and are made available via the <strong><code>magrittr</code></strong> package, installed automatically with <strong><code>dplyr</code></strong>. If you use RStudio, you can type the pipe with <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd> if you have a PC or <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd> if you have a Mac.</p>
+<pre class="r"><code>surveys %&gt;%
+  filter(weight &lt; 5) %&gt;%
+  select(species_id, sex, weight)</code></pre>
+<p>In the above code, we use the pipe to send the <code>surveys</code> dataset first through <code>filter()</code> to keep rows where <code>weight</code> is less than 5, then through <code>select()</code> to keep only the <code>species_id</code>, <code>sex</code>, and <code>weight</code> columns. Since <code>%&gt;%</code> takes the object on its left and passes it as the first argument to the function on its right, we don’t need to explicitly include the data frame as an argument to the <code>filter()</code> and <code>select()</code> functions any more.</p>
+<p>Some may find it helpful to read the pipe like the word “then”. For instance, in the above example, we took the data frame <code>surveys</code>, <em>then</em> we <code>filter</code>ed for rows with <code>weight &lt; 5</code>, <em>then</em> we <code>select</code>ed columns <code>species_id</code>, <code>sex</code>, and <code>weight</code>. The <strong><code>dplyr</code></strong> functions by themselves are somewhat simple, but by combining them into linear workflows with the pipe, we can accomplish more complex manipulations of data frames.</p>
+<p>If we want to create a new object with this smaller version of the data, we can assign it a new name:</p>
+<pre class="r"><code>surveys_sml &lt;- surveys %&gt;%
+  filter(weight &lt; 5) %&gt;%
+  select(species_id, sex, weight)
+surveys_sml</code></pre>
+<p>Note that the final data frame is the leftmost part of this expression.</p>
+</div>
+<div id="mutate" class="section level2">
+<h2>Mutate</h2>
+<p>Frequently you’ll want to create new columns based on the values in existing columns, for example to do unit conversions, or to find the ratio of values in two columns. For this we’ll use <code>mutate()</code>.</p>
+<p>To create a new column of weight in kg:</p>
+<pre class="r"><code>surveys %&gt;%
+  mutate(weight_kg = weight / 1000)</code></pre>
+<p>You can also create a second new column based on the first new column within the same call of <code>mutate()</code>:</p>
+<pre class="r"><code>surveys %&gt;%
+  mutate(weight_kg = weight / 1000,
+         weight_lb = weight_kg * 2.2)</code></pre>
+<p>If this runs off your screen and you just want to see the first few rows, you can use a pipe to view the <code>head()</code> of the data. (Pipes work with non-<strong><code>dplyr</code></strong> functions, too, as long as the <strong><code>dplyr</code></strong> or <code>magrittr</code> package is loaded).</p>
+<pre class="r"><code>surveys %&gt;%
+  mutate(weight_kg = weight / 1000) %&gt;%
+  head()</code></pre>
+<p>The first few rows of the output are full of <code>NA</code>s, so if we wanted to remove those we could insert a <code>filter()</code> in the chain:</p>
+<pre class="r"><code>surveys %&gt;%
+  filter(!is.na(weight)) %&gt;%
+  mutate(weight_kg = weight / 1000) %&gt;%
+  head()</code></pre>
+<p><code>is.na()</code> is a function that determines whether something is an <code>NA</code>. The <code>!</code> symbol negates the result, so we’re asking for every row where weight <em>is not</em> an <code>NA</code>.</p>
+</div>
+<div id="split-apply-combine-approach" class="section level2">
+<h2>Split-apply-combine Approach</h2>
+<p>Many data analysis tasks can be approached using the <em>split-apply-combine</em> paradigm: split the data into groups, apply some analysis to each group, and then combine the results. <strong><code>dplyr</code></strong> makes this very easy through the use of the <code>group_by()</code> function.</p>
+<div id="the-summarize-function" class="section level4">
+<h4>The <code>summarize()</code> function</h4>
+<p><code>group_by()</code> is often used together with <code>summarize()</code>, which collapses each group into a single-row summary of that group. <code>group_by()</code> takes as arguments the column names that contain the <strong>categorical</strong> variables for which you want to calculate the summary statistics. So to compute the mean <code>weight</code> by sex:</p>
+<pre class="r"><code>surveys %&gt;%
+  group_by(sex) %&gt;%
+  summarize(mean_weight = mean(weight, na.rm = TRUE))</code></pre>
+<p>You may also have noticed that the output from these calls doesn’t run off the screen anymore. It’s one of the advantages of <code>tbl_df</code> over data frame.</p>
+<p>You can also group by multiple columns:</p>
+<pre class="r"><code>surveys %&gt;%
+  group_by(sex, species_id) %&gt;%
+  summarize(mean_weight = mean(weight, na.rm = TRUE)) %&gt;% 
+  tail()</code></pre>
+<p>Here, we used <code>tail()</code> to look at the last six rows of our summary. Before, we had used <code>head()</code> to look at the first six rows. We can see that the <code>sex</code> column contains <code>NA</code> values because some animals had escaped before their sex and body weights could be determined. The resulting <code>mean_weight</code> column does not contain <code>NA</code> but <code>NaN</code> (which refers to “Not a Number”) because <code>mean()</code> was called on a vector of <code>NA</code> values while at the same time setting <code>na.rm = TRUE</code>. To avoid this, we can remove the missing values for weight before we attempt to calculate the summary statistics on weight. Because the missing values are removed first, we can omit <code>na.rm = TRUE</code> when computing the mean:</p>
+<pre class="r"><code>surveys %&gt;%
+  filter(!is.na(weight)) %&gt;%
+  group_by(sex, species_id) %&gt;%
+  summarize(mean_weight = mean(weight))</code></pre>
+<p>Here, again, the output from these calls doesn’t run off the screen anymore. If you want to display more data, you can use the <code>print()</code> function at the end of your chain with the argument <code>n</code> specifying the number of rows to display:</p>
+<pre class="r"><code>surveys %&gt;%
+  filter(!is.na(weight)) %&gt;%
+  group_by(sex, species_id) %&gt;%
+  summarize(mean_weight = mean(weight)) %&gt;%
+  print(n = 15)</code></pre>
+<p>Once the data are grouped, you can also summarize multiple variables at the same time (and not necessarily on the same variable). For instance, we could add a column indicating the minimum weight for each species for each sex:</p>
+<pre class="r"><code>surveys %&gt;%
+  filter(!is.na(weight)) %&gt;%
+  group_by(sex, species_id) %&gt;%
+  summarize(mean_weight = mean(weight),
+            min_weight = min(weight))</code></pre>
+<p>It is sometimes useful to rearrange the result of a query to inspect the values. For instance, we can sort on <code>min_weight</code> to put the lighter species first:</p>
+<pre class="r"><code>surveys %&gt;%
+  filter(!is.na(weight)) %&gt;%
+  group_by(sex, species_id) %&gt;%
+  summarize(mean_weight = mean(weight),
+            min_weight = min(weight)) %&gt;%
+  arrange(min_weight)</code></pre>
+<p>To sort in descending order, we need to add the <code>desc()</code> function. If we want to sort the results by decreasing order of mean weight:</p>
+<pre class="r"><code>surveys %&gt;%
+  filter(!is.na(weight)) %&gt;%
+  group_by(sex, species_id) %&gt;%
+  summarize(mean_weight = mean(weight),
+            min_weight = min(weight)) %&gt;%
+  arrange(desc(mean_weight))</code></pre>
+</div>
+</div>
+<div id="counting" class="section level2">
+<h2>Counting</h2>
+<p>When working with data, we often want to know the number of observations found for each factor or combination of factors. For this task, <strong><code>dplyr</code></strong> provides <code>count()</code>. For example, if we wanted to count the number of rows of data for each sex, we would do:</p>
+<pre class="r"><code>surveys %&gt;%
+    count(sex) </code></pre>
+<p>The <code>count()</code> function is shorthand for something we’ve already seen: grouping by a variable, and summarizing it by counting the number of observations in that group. In other words, <code>surveys %&gt;% count()</code> is equivalent to:</p>
+<pre class="r"><code>surveys %&gt;%
+    group_by(sex) %&gt;%
+    summarise(count = n())</code></pre>
+<p>For convenience, <code>count()</code> provides the <code>sort</code> argument:</p>
+<pre class="r"><code>surveys %&gt;%
+    count(sex, sort = TRUE) </code></pre>
+<p>Previous example shows the use of <code>count()</code> to count the number of rows/observations for <em>one</em> factor (i.e., <code>sex</code>). If we wanted to count <em>combination of factors</em>, such as <code>sex</code> and <code>species</code>, we would specify the first and the second factor as the arguments of <code>count()</code>:</p>
+<pre class="r"><code>surveys %&gt;%
+  count(sex, species) </code></pre>
+<p>With the above code, we can proceed with <code>arrange()</code> to sort the table according to a number of criteria so that we have a better comparison. For instance, we might want to arrange the table above in (i) an alphabetical order of the levels of the species and (ii) in descending order of the count:</p>
+<pre class="r"><code>surveys %&gt;%
+  count(sex, species) %&gt;%
+  arrange(species, desc(n))</code></pre>
+<p>From the table above, we may learn that, for instance, there are 75 observations of the <em>albigula</em> species that are not specified for its sex (i.e. <code>NA</code>).</p>
+</div>
+<div id="exporting-data" class="section level2">
+<h2>Exporting data</h2>
+<p>Now that you have learned how to use <strong><code>dplyr</code></strong> to extract information from or summarize your raw data, you may want to export these new data sets to share them with your collaborators or for archival.</p>
+<p>Similar to the <code>read_csv()</code> function used for reading CSV files into R, there is a <code>write_csv()</code> function that generates CSV files from data frames.</p>
+<p>Before using <code>write_csv()</code>, we are going to create a new folder, <code>data</code>, in our working directory that will store this generated dataset. We don’t want to write generated datasets in the same directory as our raw data. It’s good practice to keep them separate. The <code>data_raw</code> folder should only contain the raw, unaltered data, and should be left alone to make sure we don’t delete or modify it. In contrast, our script will generate the contents of the <code>data</code> directory, so even if the files it contains are deleted, we can always re-generate them.</p>
+<p>In preparation for our next lesson on plotting, we are going to prepare a cleaned up version of the data set that doesn’t include any missing data.</p>
+<p>Let’s start by removing observations of animals for which <code>weight</code> and <code>hindfoot_length</code> are missing, or the <code>sex</code> has not been determined:</p>
+<pre class="r"><code>surveys_complete &lt;- surveys %&gt;%
+  filter(!is.na(weight),           # remove missing weight
+         !is.na(hindfoot_length),  # remove missing hindfoot_length
+         !is.na(sex))                # remove missing sex</code></pre>
+<p>Because we are interested in plotting how species abundances have changed through time, we are also going to remove observations for rare species (i.e., that have been observed less than 50 times). We will do this in two steps: first we are going to create a data set that counts how often each species has been observed, and filter out the rare species; then, we will extract only the observations for these more common species:</p>
+<pre class="r"><code>## Extract the most common species_id
+species_counts &lt;- surveys_complete %&gt;%
+    count(species_id) %&gt;% 
+    filter(n &gt;= 50)
+## Only keep the most common species
+surveys_complete &lt;- surveys_complete %&gt;%
+  filter(species_id %in% species_counts$species_id)</code></pre>
+<pre class="r"><code>### Create the dataset for exporting:
+##  Start by removing observations for which the `species_id`, `weight`,
+##  `hindfoot_length`, or `sex` data are missing:
+surveys_complete &lt;- surveys %&gt;%
+    filter(species_id != &quot;&quot;,        # remove missing species_id
+           !is.na(weight),                 # remove missing weight
+           !is.na(hindfoot_length),        # remove missing hindfoot_length
+           sex != &quot;&quot;)                      # remove missing sex
+##  Now remove rare species in two steps. First, make a list of species which
+##  appear at least 50 times in our dataset:
+species_counts &lt;- surveys_complete %&gt;%
+    count(species_id) %&gt;% 
+    filter(n &gt;= 50) %&gt;%
+    select(species_id)
+##  Second, keep only those species:
+surveys_complete &lt;- surveys_complete %&gt;%
+    filter(species_id %in% species_counts$species_id)</code></pre>
+<p>To make sure that everyone has the same data set, check that <code>surveys_complete</code> has <code>nrow(surveys_complete)</code> rows and <code>ncol(surveys_complete)</code> columns by typing <code>dim(surveys_complete)</code>.</p>
+<p>Now that our data set is ready, we can save it as a CSV file in our <code>data</code> folder.</p>
+<pre class="r"><code>write_csv(surveys_complete, path = &quot;data/surveys_complete.csv&quot;)</code></pre>
+</div>
+</div>
+
+
+<hr/>
+<div class="row">
+  <div class="col-md-7 text-left">
+    <p class="text-muted">
+      <a href="https://elizabethmcd.github.io">Elizabeth McDaniel</a>,  2020. <a href="https://github.com/elizabethmcd/R-amplicons/blob/master/LICENSE.md">License</a>.
+    </p>
+  </div>
+  <div class="col-md-5 text-right">
+    <p class="text-muted">
+      <a href="https://github.com/elizabethmcd/R-amplicons/issues/new">Github Repository</a>. <br/>
+    </p>
+  </div>
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
