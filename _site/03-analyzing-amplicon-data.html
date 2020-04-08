@@ -383,7 +383,573 @@ div.tocify {
 </div>
 
 
+<p>Students performed 16S rRNA sequencing for their Winogradsky column perturbation experiments. We had a total of 26 samples that had sufficient quality DNA to sequence. The samples are split by the name of the file/sample, the group that performed the experiment, and the description of the perturbation that was done to that sample:</p>
+<pre><code># Sample    Group   Description
+Sample-1    Thermal Control
+Sample-2    Thermal Heat_Shock
+Sample-3    Thermal Preheat
+Sample-7    Mudbucket   Control
+Sample-8    Mudbucket   tetracycline_1
+Sample-9    Mudbucket   tetracycline_2
+Sample-10   Mudbucket   tetracycline_rifampicin
+Sample-13   Green_Sludge    tube1
+Sample-14   Green_Sludge    tube2
+Sample-15   Green_Sludge    tube3
+Sample-16   Green_Sludge    control
+Sample-19   Saltbaes    control
+Sample-20   Saltbaes    sample1
+Sample-21   Saltbaes    sample2
+Sample-22   Saltbaes    sample3
+Sample-25   Microbiohomies  sample1
+Sample-26   Microbiohomies  sample2
+Sample-27   Microbiohomies  control
+Sample-28   Microbiohomies  both
+Sample-30   Microbiohomies  no_description
+Sample-31   Losegradsky_Column  cpmtrp;
+Sample-32   Losegradsky_Column  malathion
+Sample-33   Losegradsky_Column  malathion
+Sample-34   Losegradsky_Column  malathion
+Sample-35   negative_control    negative_control
+Sample-41   oil_wells   control</code></pre>
+<div id="initial-sample-qc-checks" class="section level1">
+<h1>Initial Sample QC Checks</h1>
+<p>We applied a series of filtering and processing steps to these sequences to make sure we are working with high-quality data for the analysis. To see an overview of these steps, read through the <a href="01-preprocessing.html">Preprocessing Overview</a> page.</p>
+<p>To look at how the quality stats vary by sample, let’s look at the <code>sample-codes-metadata.csv</code> containing the information for each sample (as seen above) and the <code>read-stats.txt</code> file. The <code>read-stats.txt</code> file is a tab-delimited file that contains information for how many reads remained after each preprocessing step. Since this is a tab-delimited file, we can’t use <code>read.csv</code> or <code>read_csv</code> but rather the <code>read_delim</code> function. To read in the files:</p>
+<pre><code>metadata &lt;- read.csv(&quot;raw_data/sample-codes-metadata&quot;)
+stats &lt;- read_delim(&quot;raw_data/reads-stats.txt&quot;, delim=&#39;\t&#39;, col_names = FALSE)</code></pre>
+<p>Looking at the <code>head()</code> of the metadata file:</p>
+<pre><code>head(metadata)
 
+    Sample     Group    Description
+1 Sample-1   Thermal        Control
+2 Sample-2   Thermal     Heat_Shock
+3 Sample-3   Thermal        Preheat
+4 Sample-7 Mudbucket        Control
+5 Sample-8 Mudbucket tetracycline_1
+6 Sample-9 Mudbucket tetracycline_2</code></pre>
+<p>Whereas the <code>stats</code> dataframe doesn’t have any column names. Let’s give it these column names:</p>
+<pre><code>colnames(stats) = c(&quot;Sample&quot;, &quot;total_input_reads&quot;, &quot;reads_passed_filtering&quot;, &quot;R_reads_after_denoising&quot;, &quot;F_reads_after_denoising&quot;, &quot;merged_reads&quot;, &quot;non_chimera_reads&quot;)</code></pre>
+<p>And look at the <code>head()</code>:</p>
+<pre><code>head(stats)
+
+  Sample total_input_rea… reads_passed_fi… R_reads_after_d… F_reads_after_d… merged_reads
+  &lt;chr&gt;             &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;        &lt;dbl&gt;
+1 Sampl…           600647            71945            70447            70779        58404
+2 Sampl…              320               43               30               31           28
+3 Sampl…           142096             8212             8149             8140         7833
+4 Sampl…           188964            12931            12123            12278        10673
+5 Sampl…          1536624           162939           160099           160925       148823
+6 Sampl…           235898            18257            17006            17281        15116</code></pre>
+<p>Notice that now the <code>metadata</code> and <code>stats</code> files have the same column name and column information in the <code>Sample</code> column. What if we want to combine these two datasets together so we don’t have to keep looking back and forth at the names of the samples and the read stats? We can do that with a function within <code>dplyr</code> called <code>join</code>. This function will take two dataframes, and if they have an identical column between the two of them, it merges them into one. Let’s call this new dataframe <code>info</code> and use the specifc <code>join</code> function <code>left_join</code>. This simply means that whichever dataframe you list first in the function, that dataframes information will be first, or on the “left” of the resulting, merged dataframe.</p>
+<p>Reminder that you will first need to have either the full <code>tidyverse</code> or <code>dplyr</code> packages installed/loaded:</p>
+<pre><code>library(tidyverse)
+library(dplyr)</code></pre>
+<p>To join the two dataframes:</p>
+<pre><code>info = left_join(metadata, stats)</code></pre>
+<p>Now we have our sample metadata and stats information all in one place.</p>
+<pre><code>Sample  Group   Description total_input_reads   reads_passed_filtering  R_reads_after_denoising F_reads_after_denoising merged_reads    non_chimera_reads
+Sample-1    Thermal Control 600647  71945   70447   70779   58404   58283
+Sample-2    Thermal Heat_Shock  38495   4803    4408    4443    3146    3146
+Sample-3    Thermal Preheat 1442786 204677  202301  202921  171843  170651
+Sample-7    Mudbucket   Control 1529    233 171 179 156 156
+Sample-8    Mudbucket   tetracycline_1  1140    136 89  101 80  80
+Sample-9    Mudbucket   tetracycline_2  179 25  11  11  8   8
+Sample-10   Mudbucket   tetracycline_rifampicin 320 43  30  31  28  28
+Sample-13   Green_Sludge    tube1   142096  8212    8149    8140    7833    7833
+Sample-14   Green_Sludge    tube2   188964  12931   12123   12278   10673   10573
+Sample-15   Green_Sludge    tube3   1536624 162939  160099  160925  148823  147639
+Sample-16   Green_Sludge    control 235898  18257   17006   17281   15116   14946
+Sample-19   Saltbaes    control 7450    454 323 293 245 245
+Sample-20   Saltbaes    sample1 2591598 190792  182335  184808  159728  148924
+Sample-21   Saltbaes    sample2 122093  9423    8861    8853    7779    7779
+Sample-22   Saltbaes    sample3 753351  51016   48698   48958   44672   44658
+Sample-25   Microbiohomies  sample1 7256    849 729 746 636 636
+Sample-26   Microbiohomies  sample2 2453    225 173 172 162 162
+Sample-27   Microbiohomies  control 7129    793 670 668 574 574
+Sample-28   Microbiohomies  both    7912    980 843 833 752 752
+Sample-30   Microbiohomies  no_description  925161  102466  101930  102024  74356   69828
+Sample-31   Losegradsky_Column  cpmtrp; 2398738 255566  250035  251638  231810  229782
+Sample-32   Losegradsky_Column  malathion   954 51  21  19  2   2
+Sample-33   Losegradsky_Column  malathion   3331    199 112 123 82  82
+Sample-34   Losegradsky_Column  malathion   3714    328 240 221 175 175
+Sample-35   negative_control    negative_control    50481   5749    5360    5218    4594    4594
+Sample-41   oil_wells   control 24413   2893    2613    2604    2454    2454</code></pre>
+<p>If you can’t get the dataset to join, I have this cleaned version available for you to download. It is the <code>winogradsky_sample_stats.csv</code> file, and you can load it into R by running:</p>
+<pre><code>info &lt;- read.csv(&quot;raw_data/winogradsky_sample_stats.csv&quot;)
+head(info)</code></pre>
+<p>Looking at this file, we can see the stats for each round of preprocessing for each sample:</p>
+<pre><code># Sample     Group    Description total_input_reads reads_passed_filtering
+1 Sample-1   Thermal        Control            600647                  71945
+2 Sample-2   Thermal     Heat_Shock             38495                   4803
+3 Sample-3   Thermal        Preheat           1442786                 204677
+4 Sample-7 Mudbucket        Control              1529                    233
+5 Sample-8 Mudbucket tetracycline_1              1140                    136
+6 Sample-9 Mudbucket tetracycline_2               179                     25
+  R_reads_after_denoising F_reads_after_denoising merged_reads
+1                   70447                   70779        58404
+2                    4408                    4443         3146
+3                  202301                  202921       171843
+4                     171                     179          156
+5                      89                     101           80
+6                      11                      11            8
+  non_chimera_reads
+1             58283
+2              3146
+3            170651
+4               156
+5                80
+6                 8</code></pre>
+<p>Let’s say for now we just want to keep samples that have more than 1,000 reads in the final step. The final step of preprocessing was to remove chimeras, and therefore the <code>non_chimera_reads</code> column contains the final set of reads available for analysis. We can use <code>filter</code> to get rows of samples where this column is greater than 1,000. We can also use <code>select</code> with pipes <code>%&gt;%</code> to only look at the Sample, Group, Description, and end reads columns (non_chimera_reads):</p>
+<pre><code>info %&gt;% 
+  filter(non_chimera_reads &gt; 1000) %&gt;% 
+  select(Sample, Group, Description, non_chimera_reads)</code></pre>
+<p>This gives us back 14 samples that passed this quality filtering threshold of at least 1,000 reads at the end of preprocessing:</p>
+<pre><code>      Sample              Group      Description non_chimera_reads
+1   Sample-1            Thermal          Control             58283
+2   Sample-2            Thermal       Heat_Shock              3146
+3   Sample-3            Thermal          Preheat            170651
+4  Sample-13       Green_Sludge            tube1              7833
+5  Sample-14       Green_Sludge            tube2             10573
+6  Sample-15       Green_Sludge            tube3            147639
+7  Sample-16       Green_Sludge          control             14946
+8  Sample-20           Saltbaes          sample1            148924
+9  Sample-21           Saltbaes          sample2              7779
+10 Sample-22           Saltbaes          sample3             44658
+11 Sample-30     Microbiohomies   no_description             69828
+12 Sample-31 Losegradsky_Column          cpmtrp;            229782
+13 Sample-35   negative_control negative_control              4594
+14 Sample-41          oil_wells          control              2454</code></pre>
+<p>If we wanted to be even more stringent, we could use samples with at least 10,000 reads at the end of preprocessing:</p>
+<pre><code>info %&gt;% 
+  filter(non_chimera_reads &gt; 10000) %&gt;% 
+  select(Sample, Group, Description, non_chimera_reads)</code></pre>
+<p>Only 9 samples pass this threshold:</p>
+<pre><code>     Sample              Group    Description non_chimera_reads
+1  Sample-1            Thermal        Control             58283
+2  Sample-3            Thermal        Preheat            170651
+3 Sample-14       Green_Sludge          tube2             10573
+4 Sample-15       Green_Sludge          tube3            147639
+5 Sample-16       Green_Sludge        control             14946
+6 Sample-20           Saltbaes        sample1            148924
+7 Sample-22           Saltbaes        sample3             44658
+8 Sample-30     Microbiohomies no_description             69828
+9 Sample-31 Losegradsky_Column        cpmtrp;            229782</code></pre>
+<p>Since the “Green Sludge” group had almost all of their samples contain 10,000 reads (the tube1 sample contains ~7,000 reads - which is close), I’m going to continue all examples in certain cases with those samples.</p>
+</div>
+<div id="inspecting-otu-and-taxonomy-files-with-dplyr" class="section level1">
+<h1>Inspecting OTU and Taxonomy Files with <strong><code>dplyr</code></strong></h1>
+<p>The standard output of any 16S amplicon preprocessing pipeline are two files - a file containing the taxonomical classification for each OTU (operational taxonomic unit), and a file containing the abundane of each OTU in each sample. Let’s load those datasets into R. Note - these were saved as special kind of “R” files and have to be read in as such to preserve their structure before we convert them into dataframes.</p>
+<pre><code># taxonomy file 
+taxas = readRDS(&quot;raw_data/winogradsky.taxon.table.rds&quot;)
+# OTU file
+otus = readRDS(&quot;raw_data/winogradsky.seq.tab.rds&quot;)</code></pre>
+<p>If you look at the structure of each dataset using <code>str</code> you will see that these files contain lists. For example the structure of the taxonomy file gives you this:</p>
+<pre><code>str(taxas)
+
+ chr [1:2723, 1:7] &quot;Bacteria&quot; &quot;Bacteria&quot; &quot;Bacteria&quot; &quot;Bacteria&quot; &quot;Bacteria&quot; &quot;Bacteria&quot; ...
+ - attr(*, &quot;dimnames&quot;)=List of 2
+  ..$ : chr [1:2723] &quot;otu_1&quot; &quot;otu_2&quot; &quot;otu_3&quot; &quot;otu_4&quot; ...
+  ..$ : chr [1:7] &quot;Kingdom&quot; &quot;Phylum&quot; &quot;Class&quot; &quot;Order&quot; ...</code></pre>
+<p>This is a special format that will be important for working with the <code>phyloseq</code> and <code>ampvis2</code> packages later on. For now, let’s convert them to dataframes so we can look at them with <code>dplyr</code>. We do this by assigning them <code>as.data.frame</code>.</p>
+<pre><code># Taxonomy data frame 
+taxa_df &lt;- as.data.frame(taxas)
+# OTU data frame 
+otus_df &lt;- as.data.frame(otus)</code></pre>
+<div id="taxonomy" class="section level2">
+<h2>Taxonomy</h2>
+<p>Let’s start with the taxonomy file by looking at the <code>head()</code> of it:</p>
+<pre><code>head(taxa_df)
+
+   Kingdom  Phylum       Class            Order          Family          Genus       Species
+   &lt;fct&gt;    &lt;fct&gt;        &lt;fct&gt;            &lt;fct&gt;          &lt;fct&gt;           &lt;fct&gt;       &lt;fct&gt;  
+ 1 Bacteria Tenericutes  Mollicutes       Izimaplasmata… Izimaplasmatac… NA          NA     
+ 2 Bacteria Firmicutes   Clostridia       Clostridiales  Family_XI       NA          NA     
+ 3 Bacteria Firmicutes   Bacilli          Lactobacillal… Carnobacteriac… Trichococc… NA     
+ 4 Bacteria Firmicutes   Clostridia       Clostridiales  Ruminococcaceae Ercella     NA     
+ 5 Bacteria Proteobacte… Gammaproteobact… Chromatiales   Chromatiaceae   Allochroma… NA     
+ 6 Bacteria Firmicutes   Clostridia       Clostridiales  Family_XIV      NA          NA     
+ 7 Bacteria Tenericutes  Mollicutes       EUB33-2        NA              NA          NA     
+ 8 Bacteria Firmicutes   Clostridia       Clostridiales  Family_XII      Fusibacter  NA     
+ 9 Bacteria Firmicutes   Erysipelotrichia Erysipelotric… Erysipelotrich… Erysipelot… NA     
+10 Bacteria Spirochaetes Spirochaetia     Spirochaetales Spirochaetaceae Treponema_2 NA </code></pre>
+<p>In this file, for every OTU we have a classification at the Kingdom, Phylum, Class, Order, Family, Genus, and Species levels. We can already see that some columns contain NA values. This is fine for working with downstream packages. As a reminder, it is rare to have exact species matches to a database because this is the most granular part of the classification. You should also take the species designation and any classification with a grain of salt, because these results are from what was a “best hit” compared to a reference database. And may not actually reflect what is in your samples.</p>
+<p>For a refresher on what we learned about <code>dplyr</code>, you could look at how many OTUs were assigned at the species level by filtering out rows with NA values:</p>
+<pre><code>taxa_df %&gt;% 
+  filter(!is.na(Species))</code></pre>
+<p>And it looks like 48 of our total OTUs were given species designations:</p>
+<pre><code>   Kingdom  Phylum      Class       Order         Family          Genus          Species    
+   &lt;fct&gt;    &lt;fct&gt;       &lt;fct&gt;       &lt;fct&gt;         &lt;fct&gt;           &lt;fct&gt;          &lt;fct&gt;      
+ 1 Bacteria Actinobact… Actinobact… Corynebacter… Corynebacteria… Corynebacteri… variabile  
+ 2 Bacteria Firmicutes  Bacilli     Bacillales    Bacillaceae     Bacillus       cereus     
+ 3 Bacteria Firmicutes  Clostridia  Clostridiales Clostridiaceae… Anaerosolibac… carboniphi…
+ 4 Bacteria Firmicutes  Negativicu… Selenomonada… Acidaminococca… Phascolarctob… faecium    
+ 5 Bacteria Firmicutes  Clostridia  Clostridiales Peptostreptoco… Romboutsia     litusebure…
+ 6 Bacteria Firmicutes  Clostridia  Clostridiales Peptostreptoco… Romboutsia     sedimentor…
+ 7 Bacteria Firmicutes  Clostridia  Clostridiales Peptostreptoco… Acetoanaerobi… pronyense  
+ 8 Bacteria Firmicutes  Clostridia  Clostridiales Peptostreptoco… Terrisporobac… mayombei   
+ 9 Bacteria Firmicutes  Clostridia  Clostridiales Family_XI       Sedimentibact… acidaminiv…
+10 Bacteria Firmicutes  Clostridia  Clostridiales Family_XI       Sedimentibact… saalensis  
+# … with 38 more rows</code></pre>
+<p>What if we wanted to quickly look at the distribution of different types of phyla across all our samples? We can do this by <code>group_by</code> on the “Phylum” column, and counting those groups. Since there are NAs in this dataset, first we have to filter them out to get an accurate count. We can arrange by largest to smallest by using the <code>-</code> sign, since the default behavior of <code>count()</code> is to list from smallest to largest:</p>
+<pre><code>taxa_df %&gt;%
+  filter(!is.na(Phylum)) %&gt;% 
+  group_by(Phylum) %&gt;%
+  summarize(count = n()) %&gt;% 
+  arrange(-count)</code></pre>
+<p>And we get for the entire dataset (across all samples regardless of type of quality):</p>
+<pre><code>  Phylum          count
+   &lt;fct&gt;           &lt;int&gt;
+ 1 Firmicutes        883
+ 2 Proteobacteria    466
+ 3 Actinobacteria    281
+ 4 Bacteroidetes     197
+ 5 Planctomycetes    134
+ 6 Tenericutes        87
+ 7 Cyanobacteria      82
+ 8 Chloroflexi        78
+ 9 Verrucomicrobia    71
+10 Acidobacteria      61
+# … with 31 more rows</code></pre>
+<p>You could repeat this for any group that you wanted to.</p>
+<blockquote>
+<h3 id="challenge">Challenge</h3>
+<p>Now that we have our data in a tidy format in <code>otu_data</code>, let’s look at some summary statistics by each sample. For each sample, calculate the mean, minimum, and maximum number of raw_counts. You should get something that looks like:</p>
+</blockquote>
+<pre><code>   Sample    mean_counts   min   max
+   &lt;chr&gt;           &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
+ 1 Sample-1      21.4        0  3382
+ 2 Sample-10      0.0103     0    13
+ 3 Sample-13      2.88       0   859
+ 4 Sample-14      3.88       0  1222
+ 5 Sample-15     54.2        0 37731
+ 6 Sample-16      5.49       0  1246
+ 7 Sample-19      0.0900     0    62
+ 8 Sample-2       1.16       0   388
+ 9 Sample-20     54.7        0 20267
+10 Sample-21      2.86       0  1348</code></pre>
+<p>You’ll notice after performing this exercise that “Chloroplast” is listed. Sometimes organelles like chloroplasts and mitochondira will end up in our dataset - but we don’t want them there. Luckily in our case, chloroplasts are defined at the Order level and Mitochondria at the Family level, so we can use that information to filter them out with <code>!=</code> which stands for does not equal.</p>
+<p>First we will want to keep the rownames, because this has important information about the classification for each OTU, which we will need later to match with the OTU counts data:</p>
+<pre><code>taxa_intm &lt;- rownames_to_column(taxa_df, &quot;otu&quot;)
+
+cleaned_taxa &lt;- taxa_intm %&gt;%
+  filter(Order != &quot;Chloroplast&quot;) %&gt;%
+  filter(Family != &quot;Mitochondria&quot;)</code></pre>
+<p>We will save this <code>cleaned_taxa</code> dataframe and use it in a bit, it looks like:</p>
+<pre><code>   otu  Kingdom         Phylum               Class            Order            Family
+1 otu_1 Bacteria    Tenericutes          Mollicutes Izimaplasmatales Izimaplasmataceae
+2 otu_2 Bacteria     Firmicutes          Clostridia    Clostridiales         Family_XI
+3 otu_3 Bacteria     Firmicutes             Bacilli  Lactobacillales Carnobacteriaceae
+4 otu_4 Bacteria     Firmicutes          Clostridia    Clostridiales   Ruminococcaceae
+5 otu_5 Bacteria Proteobacteria Gammaproteobacteria     Chromatiales     Chromatiaceae
+6 otu_6 Bacteria     Firmicutes          Clostridia    Clostridiales        Family_XIV
+           Genus Species
+1           &lt;NA&gt;    &lt;NA&gt;
+2           &lt;NA&gt;    &lt;NA&gt;
+3   Trichococcus    &lt;NA&gt;
+4        Ercella    &lt;NA&gt;
+5 Allochromatium    &lt;NA&gt;
+6           &lt;NA&gt;    &lt;NA&gt;</code></pre>
+<p>Where we have manually taken out OTUs with any classification corresponding to Chloroplast or Mitochondria.</p>
+</div>
+<div id="otu-counts" class="section level2">
+<h2>OTU Counts</h2>
+<p>Now let’s look at the <code>otu_df</code> of counts of OTUs:</p>
+<pre><code>   otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10 otu_11 otu_12 otu_13 otu_14
+   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;
+ 1  3102  1801   552   988  2001  1161   450   307   405   3382    193      0   1679    544
+ 2    13     0     0     0     0     7     0     0     0      0      0      0      0      0
+ 3     0     6   227     0     0   151     0     0     0      0      0      0      0      0
+ 4  1222   796   405   508   233   277   280   120   172    220     69      0    589    326
+ 5 37731 11368  1909  4146  3834  3513  5139  3378  2696   2874      0      0   1410   2327
+ 6  1246   891   610   672   388   313   921   134   350    147      0      0    520    865
+ 7    62    30    24    19     0    10     0    21     4     21      0      0      0      0
+ 8   321   248    51   133     0   168    51    10   132      0      0    333    129     30
+ 9 20267 10643  6544  6712  5629  3178  1182  2458  2505   3576      0      0   2650   2195
+10   574   267   234   263   376   200   279   113   169    168      0      0    163    185
+# … with 16 more rows, and 2,709 more variables: otu_15 &lt;int&gt;, otu_16 &lt;int&gt;, otu_17 &lt;int&gt;,</code></pre>
+<p>Each column is a different OTU, and each row is a different sample. So each cell of data are the counts corresponding to that OTU in a specific sample. We can look at the total counts of OTUs for each sample with <code>rowSums</code>:</p>
+<pre><code>rowSums(otus_df)
+
+ Sample-1 Sample-10 Sample-13 Sample-14 Sample-15 Sample-16 Sample-19  Sample-2 Sample-20 
+    58283        28      7833     10573    147639     14946       245      3146    148924 
+Sample-21 Sample-22 Sample-25 Sample-26 Sample-27 Sample-28  Sample-3 Sample-30 Sample-31 
+     7779     44658       636       162       574       752    170651     69828    229782 
+Sample-32 Sample-33 Sample-34 Sample-35 Sample-41  Sample-7  Sample-8  Sample-9 
+        2        82       175      4594      2454       156        80         8 </code></pre>
+<p>This corresponds to the OTUs that were identified for each sample, and is roughly comparable to the output of reads that we saw above in the stats file that were available at the end of preprocessing for analysis.</p>
+<p>We can summarize these results with <code>summary</code>:</p>
+<pre><code>rowSums(otus_df) %&gt;% 
+  summary()
+
+   Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+     2.0    165.2   2800.0  35538.1  37230.0 229782.0 </code></pre>
+<blockquote>
+<h3 id="challenge-1">Challenge</h3>
+<p>Using the otus_df, create summary statistics for calculating the mean, minimum, and maxiumum number of counts for each sample. You should get something like:</p>
+</blockquote>
+<pre><code>   Sample    mean_counts   min   max
+   &lt;chr&gt;           &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
+ 1 Sample-1      21.4        0  3382
+ 2 Sample-10      0.0103     0    13
+ 3 Sample-13      2.88       0   859
+ 4 Sample-14      3.88       0  1222
+ 5 Sample-15     54.2        0 37731
+ 6 Sample-16      5.49       0  1246
+ 7 Sample-19      0.0900     0    62
+ 8 Sample-2       1.16       0   388
+ 9 Sample-20     54.7        0 20267
+10 Sample-21      2.86       0  1348</code></pre>
+<p>Currently, the way this dataset is set up is a bit messy to look at, and doesn’t emplify “tidy” data. Each sample is an entire row, each column a separate OTU. Whereas with “tidy” data, each individual data entry should be given its’ own row. We can do this by a series of commands. First, we want to create an intermediate dataframe where the sample names are a new column. Currently they are row names and we can’t access them easily:</p>
+<pre><code>otu_intm &lt;- rownames_to_column(otus_df, &quot;Sample&quot;)</code></pre>
+<p>Then, we can use the <code>tidyr</code> package within the <code>tidyverse</code> to reformat our table. If you couldn’t get the full tidyverse to install, you can install just tidyr with <code>install.packages(&quot;tidyr&quot;)</code> and then loading it with <code>library(tidyr)</code>. We can use the function <code>pivot_longer</code> to reformat our dataframe to be in “long” format, instead of the current “wide” format. And inspect it with <code>head()</code> first to see what we did:</p>
+<pre><code>otu_intm %&gt;%
+  pivot_longer(cols=-Sample, names_to=&quot;otu&quot;, values_to=&quot;raw_counts&quot;) %&gt;%
+  head(n=20)</code></pre>
+<p>Where now our OTU data looks like:</p>
+<pre><code>   Sample   otu    raw_counts
+   &lt;chr&gt;    &lt;chr&gt;  &lt;int&gt;
+ 1 Sample-1 otu_1   3102
+ 2 Sample-1 otu_2   1801
+ 3 Sample-1 otu_3    552
+ 4 Sample-1 otu_4    988
+ 5 Sample-1 otu_5   2001
+ 6 Sample-1 otu_6   1161
+ 7 Sample-1 otu_7    450
+ 8 Sample-1 otu_8    307
+ 9 Sample-1 otu_9    405
+10 Sample-1 otu_10  3382
+11 Sample-1 otu_11   193
+12 Sample-1 otu_12     0
+13 Sample-1 otu_13  1679
+14 Sample-1 otu_14   544
+15 Sample-1 otu_15     0
+16 Sample-1 otu_16   965
+17 Sample-1 otu_17   561
+18 Sample-1 otu_18  1655
+19 Sample-1 otu_19   543
+20 Sample-1 otu_20  1255</code></pre>
+<p>So for every OTU, we have the information for counts of that OTU in that sample, where we can clearly read each row the information that we want. Let’s save this as a new dataframe called <code>otu_data</code>:</p>
+<pre><code>otu_data &lt;- otu_intm %&gt;%
+  pivot_longer(cols=-Sample, names_to=&quot;otu&quot;, values_to=&quot;raw_counts&quot;) %&gt;%</code></pre>
+</div>
+<div id="relative-abundances" class="section level2">
+<h2>Relative Abundances</h2>
+<p>Note that these are raw counts and are not the relative abundance of each OTU. For downstream analyses, we want to be working with relative abundances. This calculations comes from dividing the counts for each OTU in a sample by the total number of reads or counts in that sample. For example, we know that our samples have vastly varying amounts of reads:</p>
+<pre><code>otu_data %&gt;%
+  group_by(Sample) %&gt;% 
+  summarize(sum=sum(raw_counts))
+  
+   Sample       sum
+   &lt;chr&gt;      &lt;int&gt;
+ 1 Sample-1   58283
+ 2 Sample-10     28
+ 3 Sample-13   7833
+ 4 Sample-14  10573
+ 5 Sample-15 147639
+ 6 Sample-16  14946
+ 7 Sample-19    245
+ 8 Sample-2    3146
+ 9 Sample-20 148924
+10 Sample-21   7779
+# … with 16 more rows</code></pre>
+<p>So we need to take this information into account when calculating the relative abundance of each OTU depending on the sample. We can do this by adding a <code>relative_abundance</code> column with <code>mutate</code>.</p>
+<pre><code>otu_data %&gt;% 
+  group_by(Sample) %&gt;% 
+  mutate(relative_abundance = raw_counts / sum(raw_counts))</code></pre>
+<p>First we grouped by each sample, so we are only looking at the sum of counts for each sample. Then we create a column called relative_abundance, where each raw count is divided by the sum of the raw counts within a sample. Let’s save this to a new dataframe called <code>otu_table</code> where we only have the columns for Sample, otu, and relative_abundance. We no longer need the raw counts.</p>
+<pre><code>otu_table &lt;- otu_data %&gt;% 
+  group_by(Sample) %&gt;% 
+  mutate(relative_abundance = raw_counts / sum(raw_counts)) %&gt;% 
+  select(Sample, otu, relative_abundance)</code></pre>
+<p>Now we have a table of relative abundances for each OTU. Now we want to pair this information with the taxonomy information, so we know for each OTU what its’ classification is. We can start to figure out how to do this by looking at the column names of each of the cleaned datasets we created:</p>
+<pre><code>colnames(cleaned_taxa)
+
+[1] &quot;otu&quot;     &quot;Kingdom&quot; &quot;Phylum&quot;  &quot;Class&quot;   &quot;Order&quot;   &quot;Family&quot;  &quot;Genus&quot;   &quot;Species&quot;
+
+colnames(otu_table)
+
+[1] &quot;Sample&quot;             &quot;otu&quot;                &quot;relative_abundance&quot;
+</code></pre>
+<p>Both datasets have the column “otu”. We can merge them together with <code>left_join</code> just like we did with the sample data. We will name this new dataframe as <code>merged</code>:</p>
+<pre><code>merged &lt;- left_join(otu_table, cleaned_taxa)</code></pre>
+<p>This way, we have the taxonomical information repeated for each OTU in each sample so we can access the information for each sample easily. You will notice that for some of the OTUs there isn’t a taxonomical classification. Remember we removed OTUs that had either “Chloroplast” or “Mitochondria” in the classification? Now we need to remove them from the full dataset. We can do that by removing lines where the Kingdom contains NA values:</p>
+<pre><code>merged_clean &lt;- merged %&gt;%
+  filter(!is.na(Kingdom))</code></pre>
+<p>Which looks like:</p>
+<pre><code>  Sample  otu   relative_abundan… Kingdom  Phylum  Class    Order   Family   Genus   Species
+  &lt;chr&gt;   &lt;chr&gt;             &lt;dbl&gt; &lt;fct&gt;    &lt;fct&gt;   &lt;fct&gt;    &lt;fct&gt;   &lt;fct&gt;    &lt;fct&gt;   &lt;fct&gt;  
+1 Sample… otu_1           0.0532  Bacteria Teneri… Mollicu… Izimap… Izimapl… NA      NA     
+2 Sample… otu_2           0.0309  Bacteria Firmic… Clostri… Clostr… Family_… NA      NA     
+3 Sample… otu_3           0.00947 Bacteria Firmic… Bacilli  Lactob… Carnoba… Tricho… NA     
+4 Sample… otu_4           0.0170  Bacteria Firmic… Clostri… Clostr… Ruminoc… Ercella NA     
+5 Sample… otu_5           0.0343  Bacteria Proteo… Gammapr… Chroma… Chromat… Alloch… NA     
+6 Sample… otu_6           0.0199  Bacteria Firmic… Clostri… Clostr… Family_… NA      NA    </code></pre>
+<p>Now we have a cleaned set of the dataset where we have:</p>
+<ol style="list-style-type: decimal">
+<li>Removed OTUs that have classifications as Chloroplasts or Mitochondria</li>
+<li>Calculated the relative abundance for each OTU</li>
+<li>Created a tidy dataset where we can easily read the OTU information within each sample</li>
+</ol>
+<p>We should save this cleaned dataset in our <code>cleaned_data</code> folder:</p>
+<pre><code>write.csv(merged_clean, &quot;cleaned_data/cleaned_merged_table.csv&quot;, quote = FALSE, row.names = FALSE)</code></pre>
+<blockquote>
+<h3 id="challenge-2">Challenge</h3>
+<p>Calculate the total relative abundance of each phyla by sample. Arrange in descending order.</p>
+</blockquote>
+<p>You should get something that looks like:</p>
+<pre><code>   Sample    Phylum        sum
+   &lt;chr&gt;     &lt;fct&gt;       &lt;dbl&gt;
+ 1 Sample-32 Firmicutes  1    
+ 2 Sample-7  Tenericutes 0.603
+ 3 Sample-19 Firmicutes  0.592
+ 4 Sample-13 Firmicutes  0.579
+ 5 Sample-27 Firmicutes  0.577
+ 6 Sample-28 Firmicutes  0.565
+ 7 Sample-30 Firmicutes  0.561
+ 8 Sample-25 Firmicutes  0.519
+ 9 Sample-21 Firmicutes  0.510
+10 Sample-9  Tenericutes 0.5
+# … with 822 more rows</code></pre>
+<p>If you need a copy of this dataset, the file <code>winogradsky_merged_clean_table.csv</code> is this exact file we created. You can download it and read it into R with:</p>
+<pre><code>merged_clean &lt;- read.csv(&quot;raw_data/winogradsky_merged_clean_table.csv&quot;)</code></pre>
+</div>
+<div id="exploring-our-otus" class="section level2">
+<h2>Exploring our OTUs</h2>
+<p>Now we are going to transition to looking at a specific set of samples. Since the Green_Sludge group had the highest amount of reads across all their samples, we will use their samples as an example. As a reminder, here are the 4 samples for the Green_Sludge group:</p>
+<pre><code>     Sample        Group Description
+1 Sample-13 Green_Sludge       tube1
+2 Sample-14 Green_Sludge       tube2
+3 Sample-15 Green_Sludge       tube3
+4 Sample-16 Green_Sludge     control</code></pre>
+<p>So for our downstream analysis, we want to filter rows where the Sample is equal to Samples 13, 14, 15, and 16. We can do this using the OR “|” notation to create a new data frame <code>green_sludge</code>:</p>
+<pre><code>green_sludge &lt;- merged_clean %&gt;%
+  filter(Sample == &#39;Sample-13&#39; | Sample == &#39;Sample-14&#39; | Sample == &#39;Sample-15&#39; | Sample == &#39;Sample-16&#39;)</code></pre>
+<p>So now we have a new dataframe with just the information from the green sludge samples. We also want to add the extra information about each sample , which is stored in the <code>info</code> dataframe. We can subset the <code>info</code> dataframe just to have the descriptions for the green sludge samples with:</p>
+<pre><code>green_sludge_info &lt;- info %&gt;%
+  filter(Group == &#39;Green_Sludge&#39;) %&gt;%
+  select(Sample, Description)</code></pre>
+<p>And we can merge these descriptions with the OTU information to create a new dataframe <code>green_sludge_table</code>:</p>
+<pre><code>green_sludge_table &lt;- left_join(green_sludge, green_sludge_info)</code></pre>
+<p>So now we have the information for each sample. Now we can begin some exploratory analysis based on different OTU compositions across these samples that belong to the same experimental group. Let’s look at the most abundant classes across all 4 of these samples. First we will need to calculate the relative abundance of each class within each sample.</p>
+<pre><code>agg_abund &lt;- green_sludge_table %&gt;% 
+  group_by(Sample, Class) %&gt;% 
+  summarize(agg_rel_abund=sum(relative_abundance)) %&gt;% 
+  ungroup() %&gt;% 
+  arrange(desc(agg_rel_abund))</code></pre>
+<p>Make sure to save this intermediate dataframe as <code>agg_abund</code> as we will need it to find out what phyla are highly abundant across all these samples. This output looks like:</p>
+<pre><code>     Sample    Class               agg_rel_abund
+   &lt;fct&gt;     &lt;fct&gt;                       &lt;dbl&gt;
+ 1 Sample-13 Bacilli                     0.417
+ 2 Sample-14 Clostridia                  0.327
+ 3 Sample-15 Clostridia                  0.323
+ 4 Sample-16 Clostridia                  0.301
+ 5 Sample-15 Mollicutes                  0.276
+ 6 Sample-13 Clostridia                  0.161
+ 7 Sample-14 Mollicutes                  0.156
+ 8 Sample-13 Bacteroidia                 0.155
+ 9 Sample-16 Mollicutes                  0.148
+10 Sample-13 Gammaproteobacteria         0.133
+# … with 198 more rows</code></pre>
+<p>Now let’s look at the median of each class:</p>
+<pre><code>agg_abund %&gt;%
+  group_by(Phylum) %&gt;% 
+  summarize(median=median(agg_rel_abund)) %&gt;% 
+  arrange(desc(median))</code></pre>
+<p>This should output:</p>
+<pre><code>    Class               median
+   &lt;fct&gt;                &lt;dbl&gt;
+ 1 Clostridia          0.312 
+ 2 Mollicutes          0.152 
+ 3 Bacteroidia         0.0852
+ 4 Gammaproteobacteria 0.0697
+ 5 Bacilli             0.0450
+ 6 Deltaproteobacteria 0.0367
+ 7 Synergistia         0.0335
+ 8 Erysipelotrichia    0.0249
+ 9 Actinobacteria      0.0235
+10 Spirochaetia        0.0163</code></pre>
+<p>This gives us for all 4 samples, what the the median relative abundance is for each class. We can use this to look at the abundance patterns of these dominant class across our samples by working with the 5 most abundant to start with:</p>
+<pre><code>top_class &lt;- agg_abund %&gt;%
+  group_by(Class) %&gt;% 
+  summarize(median=median(agg_rel_abund)) %&gt;% 
+  arrange(desc(median)) %&gt;% 
+  top_n(5, median) %&gt;% 
+  pull(Class)</code></pre>
+<p>What we’ve done here is select the top 5 most abundant phyla by median, and pulled the Phylum name so we can save this as a vector. Now we can filter from our larger table only the top phyla and look at their patterns across our samples:</p>
+<pre><code>top_results &lt;- green_sludge_table %&gt;% 
+  filter(Phylum %in% top_phyla) %&gt;% 
+  select(Description, relative_abundance, Phylum)</code></pre>
+<p>Now let’s look at these results in a plot. We will use <code>ggplot2</code> as part of the <code>tidyverse</code> to plot our data. If you don’t have the entire tidyverse loaded, load <code>ggplot2</code> with <code>install.packages(&quot;ggplot2&quot;)</code> and then <code>library(ggplot2)</code>. Let’s make the plot:</p>
+<pre><code>top_results %&gt;%
+  ggplot(aes(x=Class, y=relative_abundance, color=Sample)) + geom_boxplot()</code></pre>
+<p><img src="img/plot1.png" align="center" width="600"></p>
+<p>We can see some of the abundance patterns of the most abundant classes. Clostridia tend to be moderately abundant across all samples, whereas Bacilli are mostly abundant in Sample 13. Sometimes it is easier to view things on a log scale, since most of our data is concentrated towards the bottom of the y-axis:</p>
+<pre><code>top_results %&gt;%
+  ggplot(aes(x=Class, y=relative_abundance, color=Sample)) + geom_boxplot() + scale_y_log10() </code></pre>
+<p><img src="img/Plot2.png" align="center" width="600"></p>
+<p>We can “pretty-fy” our plot with a couple changes:</p>
+<pre><code>top_results %&gt;%
+  ggplot(aes(x=Class, y=relative_abundance, color=Sample)) + geom_boxplot() + scale_y_log10() + theme_classic() + labs(title=&quot;Class Changes in Green Sludge Samples&quot;, x=NULL, y=&quot;Relative Abundance&quot;)</code></pre>
+<p><img src="img/Plot3-pretty.png" align="center" width="600"></p>
+<p>These are just a couple of examples of how you can analyze your amplicon data with dplyr. We mostly did some basic cleaning steps and exploratory analysis, but you could produce lots of different analyses based on what you are interested in, such as:</p>
+<ol style="list-style-type: decimal">
+<li>How many different genera of a certain phyla/class/family do you have in your samples? What are their relative abundances in your different samples? 2. How do phyla abundances change across all your samples?</li>
+<li>What are the most abundant individual OTUs? Can you track those OTUs in all your samples?</li>
+</ol>
+</div>
+</div>
+<div id="working-with-the-phyloseq-package" class="section level1">
+<h1>Working with the <strong><code>phyloseq</code></strong> package</h1>
+<p>Now we are going to explore our amplicon data with the <code>phyloseq</code> package. <a href="https://joey711.github.io/phyloseq/">Phyloseq</a> is a package specifically built to analyze 16S sequencing data and perform various analyses and visualizations that are not in <code>dplyr</code> or base R for example. First we have to create a phyloseq object. This takes three required inputs: a taxon table, an OTU table, and a metadata file. As you recall, we loaded the objects <code>taxas</code> and <code>otus</code> from the files I gave you. We will be working with those now and still specifically looking at the Green Sludge samples. We only have to adjust the <code>otus</code> data structure to get only the Green Sludge samples:</p>
+<pre><code>green_otus = otus[c(&quot;Sample-13&quot;, &quot;Sample-14&quot;, &quot;Sample-15&quot;, &quot;Sample-16&quot;),]</code></pre>
+<p>Here we have to index like we did with vectors because these data structures are lists essentially. You can index lists just like you index vectors.</p>
+<p>We can prepare our metadata file by following these steps:</p>
+<pre><code>green_samples &lt;- as.data.frame(rownames(green_otus))
+green_samples$description &lt;- c(&quot;tube1&quot;, &quot;tube2&quot;, &quot;tube3&quot;, &quot;control&quot;)
+colnames(green_samples) &lt;- c(&quot;sample&quot;, &quot;description&quot;)
+rownames(green_samples) &lt;- rownames(green_otus)</code></pre>
+<div id="phyloseq-objects" class="section level2">
+<h2>Phyloseq Objects</h2>
+<p>Now we are ready to create our phyloseq object. We will call it <code>ps</code> to keep things simple:</p>
+<pre><code>ps &lt;- phyloseq(otu_table(green_otus, taxa_are_rows = FALSE), sample_data(green_samples), tax_table(taxas))</code></pre>
+<p>Let’s explore our phyloseq object using some of the phyloseq functions, similar to how we explored our data using <code>dplyr</code>.</p>
+<p>We can look at simple stats, with <code>ntaxa</code>, <code>nsamples</code>, and <code>sample_names</code>:</p>
+<pre><code>ntaxa(ps)
+[1] 2723
+nsamples(ps)
+[1] 4
+sample_names(ps)
+[1] &quot;Sample-13&quot; &quot;Sample-14&quot; &quot;Sample-15&quot; &quot;Sample-16&quot;</code></pre>
+<p>Since we added a “description” column to specify what the samples were, we can also look at the <code>sample_variables</code>:</p>
+<pre><code>sample_variables(ps)
+[1] &quot;sample&quot;      &quot;description&quot;</code></pre>
+<p>So for each sample, we have the sample name and the description.</p>
+<p>We can glimpse at the OTU table embedded in the ps object with <code>otu_table</code> and use similar indexing to the way we indexed our vectors and lists. Here we only have 4 samples, so we will look at the first 4 rows and the first 10 columns, where the columns are the different OTUs:</p>
+<pre><code>otu_table(ps)[1:4, 1:10]
+
+
+          otu_1 otu_2 otu_3 otu_4 otu_5 otu_6 otu_7 otu_8 otu_9 otu_10
+Sample-13     0     6   227     0     0   151     0     0     0      0
+Sample-14  1222   796   405   508   233   277   280   120   172    220
+Sample-15 37731 11368  1909  4146  3834  3513  5139  3378  2696   2874
+Sample-16  1246   891   610   672   388   313   921   134   350    147</code></pre>
+<p>And the taxon table with <code>tax_table</code> using indexing, where rows are different taxa and columns are the taxonomic ranks:</p>
+<pre><code>tax_table(ps)[1:5, 1:3]
+
+      Kingdom    Phylum           Class                
+otu_1 &quot;Bacteria&quot; &quot;Tenericutes&quot;    &quot;Mollicutes&quot;         
+otu_2 &quot;Bacteria&quot; &quot;Firmicutes&quot;     &quot;Clostridia&quot;         
+otu_3 &quot;Bacteria&quot; &quot;Firmicutes&quot;     &quot;Bacilli&quot;            
+otu_4 &quot;Bacteria&quot; &quot;Firmicutes&quot;     &quot;Clostridia&quot;         
+otu_5 &quot;Bacteria&quot; &quot;Proteobacteria&quot; &quot;Gammaproteobacteria&quot;</code></pre>
+</div>
+<div id="basic-plots" class="section level2">
+<h2>Basic Plots</h2>
+</div>
+</div>
+<div id="working-with-the-ampvis2-package" class="section level1">
+<h1>Working with the <strong><code>ampvis2</code></strong> package</h1>
+</div>
 
 
 <hr/>

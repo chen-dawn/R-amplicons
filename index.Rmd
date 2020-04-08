@@ -129,6 +129,18 @@ If you are asked to update packages, type `a` for all. If you are asked to insta
 
 * You can also do this by going to Tools -> Install Packages and typing the names of the packages separated by a comma.
 
+If you cannot install the entire `tidyverse` because of lots of errors, we only need these packages from the larger set: 
+
+```
+install.packages(c("dplyr", "tidyr", "ggplot2"))
+```
+
 ## Resources
 
-These materials were created by referencing several other resources, and this course website is by no means a completely exhaustive resource or tutorial on 16S rRNA amplicon analysis.
+These materials were created by referencing several other resources, and this course website is by no means a completely exhaustive resource or tutorial on 16S rRNA amplicon analysis. I used DADA2 within R to preprocess the samples, and various other resources to help create these tutorials.
+
+- [DADA2 Workflow](http://benjjneb.github.io/dada2/tutorial.html)
+- [Riffomonas Minimal R Microbiome Lesson](http://www.riffomonas.org/minimalR/08_taxonomic_data.html)
+- [Phyloseq Tutorials](https://joey711.github.io/phyloseq/import-data.html)
+
+
