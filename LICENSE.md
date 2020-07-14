@@ -3,7 +3,7 @@
 ## Instructional Material
 
 All instructional material is made available under the Creative Commons Attribution license.
-Introduction to R lessons are used from Data Carpentry Ecology Intro to R material. Therefore you must attribute
+Introduction to R lessons are modified from Data Carpentry Ecology Intro to R material. Therefore you must attribute
 the Data Carpentry organization.
 
 You are free:
